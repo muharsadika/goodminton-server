@@ -1,6 +1,18 @@
 import * as joi from 'joi'
 
-export const registerSchema = joi.object({
+export const adminRegisterSchema = joi.object({
+  fullname: joi.string().required(),
+  username: joi.string().required(),
+  email: joi.string().email().required(),
+  password: joi.string().required(),
+})
+
+export const adminLoginSchema = joi.object({
+  username: joi.string().required(),
+  password: joi.string().required(),
+})
+
+export const buyerRegisterSchema = joi.object({
   fullname: joi.string().required(),
   username: joi.string().required(),
   email: joi.string().email().required(),
@@ -9,7 +21,7 @@ export const registerSchema = joi.object({
   // address: joi.string(),
 })
 
-export const loginSchema = joi.object({
+export const buyerLoginSchema = joi.object({
   username: joi.string().required(),
   password: joi.string().required(),
 })

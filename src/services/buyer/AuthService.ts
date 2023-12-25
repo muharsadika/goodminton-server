@@ -1,22 +1,22 @@
 import { Repository } from "typeorm"
-import { Admin } from "../../database/entities/AdminEntity"
+import { Buyer } from "../../database/entities/BuyerEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
-import { adminRegisterSchema, adminLoginSchema } from "../../utils/validator/AuthValidator"
+import { buyerRegisterSchema, buyerLoginSchema } from "../../utils/validator/AuthValidator"
 import * as bycrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import Env from "../../utils/variable/Env"
 
 
 
-export default new class UserService {
-  private readonly authAdminRepository: Repository<Admin> = AppDataSource.getRepository(Admin)
+export default new class AuthService {
+  private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
 
   async register(req: Request, res: Response): Promise<Response> {
     try {
       const body = req.body
 
-      const { error } = adminRegisterSchema.validate(body)
+      const { error } = buyerRegisterSchema.validate(body)
       if (error) {
         return res
           .status(400)
@@ -27,13 +27,13 @@ export default new class UserService {
           })
       }
 
-      const isCheckEmailAdmin = await this.authAdminRepository.findOne({
+      const isCheckEmail = await this.authRepository.findOne({
         where: { email: body.email }
       })
-      const isCheckUsernameAdmin = await this.authAdminRepository.findOne({
+      const isCheckUsername = await this.authRepository.findOne({
         where: { username: body.username }
       })
-      if (isCheckEmailAdmin || isCheckUsernameAdmin) {
+      if (isCheckEmail || isCheckUsername) {
         return res
           .status(400)
           .json({
@@ -43,19 +43,22 @@ export default new class UserService {
       }
 
       const hashedPassword = await bycrypt.hash(body.password, 10)
-      const adminData = this.authAdminRepository.create({
+      const userData = this.authRepository.create({
         email: body.email,
         password: hashedPassword,
         fullname: body.fullname,
         username: body.username,
+        address: null,
+        phone: null,
+        profile_picture: null,
       })
-      const adminCreated = await this.authAdminRepository.save(adminData)
+      const userCreated = await this.authRepository.save(userData)
       return res
         .status(201)
         .json({
           code: 201,
           message: "USER CREATED",
-          data: adminCreated
+          data: userCreated
         })
 
     } catch (error) {
@@ -75,7 +78,7 @@ export default new class UserService {
     try {
       const body = req.body
 
-      const { error } = adminLoginSchema.validate(body)
+      const { error } = buyerLoginSchema.validate(body)
       if (error) {
         return res
           .status(400)
@@ -86,7 +89,7 @@ export default new class UserService {
           })
       }
 
-      const isCheckUsername = await this.authAdminRepository.findOne({
+      const isCheckUsername = await this.authRepository.findOne({
         where: { username: body.username }
       })
       const isCheckPassword = await bycrypt.compare(
@@ -124,15 +127,4 @@ export default new class UserService {
         })
     }
   }
-
-
-  // async logout(req: Request, res: Response): Promise<Response> {
-  //   try {
-  //     const {token} = req.params
-  //     await this.
-
-  //   } catch (error) {
-
-  //   }
-  // }
 }

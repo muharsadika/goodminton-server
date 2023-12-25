@@ -4,18 +4,17 @@ import { Product } from "./ProductEntity"
 
 @Entity("admins")
 export class Admin {
-
   @PrimaryGeneratedColumn()
-  id: number
+  id!: number
 
   @Column({ nullable: false, unique: true })
-  email: string
+  email!: string
 
   @Column({ nullable: false })
-  password: string
+  password!: string
 
   @Column({ nullable: true })
-  fullname: string
+  fullname: number
 
   @Column({ nullable: true, unique: true })
   username: string
