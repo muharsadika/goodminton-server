@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, Up
 import { Transaction } from "./TransactionEntity"
 import { Product } from "./ProductEntity"
 
-@Entity("users")
-export class User {
+@Entity("buyers")
+export class Buyer {
 
     @PrimaryGeneratedColumn()
     id: number

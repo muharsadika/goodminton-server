@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./UserEntity";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Buyer } from "./BuyerEntity";
+import { Admin } from "./AdminEntity";
 import { Transaction } from "./TransactionEntity";
 
 @Entity("products")
@@ -37,7 +38,14 @@ export class Product {
   })
   product_image_3: string
 
-  @ManyToMany(() => User, (user) => user.products_who_saved, { cascade: true })
+  @ManyToMany(() => Admin, (admin) => admin.products, {
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE"
+  })
+  @JoinColumn({ name: "admin_id" })
+  admin: Admin
+
+  @ManyToMany(() => Buyer, (buyer) => buyer.products_who_saved, { cascade: true })
   @JoinTable({
     name: "cart",
     joinColumn: {
@@ -49,9 +57,9 @@ export class Product {
       referencedColumnName: "id"
     }
   })
-  users_who_saving: User[]
+  users_who_saving: Buyer[]
 
-  @ManyToMany(() => User, (user) => user.products_who_buying, { cascade: true })
+  @ManyToMany(() => Buyer, (buyer) => buyer.products_who_buying, { cascade: true })
   @JoinTable({
     name: "collections",
     joinColumn: {
@@ -63,7 +71,7 @@ export class Product {
       referencedColumnName: "id"
     }
   })
-  users_who_buying: User[]
+  users_who_buying: Buyer[]
 
   @CreateDateColumn()
   created_at: Date

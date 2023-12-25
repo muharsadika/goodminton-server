@@ -1,8 +1,8 @@
 import { Repository } from "typeorm"
-import { User } from "../database/entities/UserEntity"
-import { AppDataSource } from "../data-source"
+import { Buyer } from "../../database/entities/BuyerEntity"
+import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
-import { loginSchema, registerSchema } from "../utils/validator/AuthValidator"
+import { loginSchema, registerSchema } from "../../utils/validator/AuthValidator"
 import * as bycrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import * as dotenv from "dotenv"
@@ -11,7 +11,7 @@ dotenv.config()
 
 
 export default new class UserService {
-  private readonly authRepository: Repository<User> = AppDataSource.getRepository(User)
+  private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
 
   async register(req: Request, res: Response): Promise<Response> {
     try {

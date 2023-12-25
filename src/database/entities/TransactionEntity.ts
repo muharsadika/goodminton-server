@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./UserEntity";
+import { User } from "./BuyerEntity";
 import { Product } from "./ProductEntity";
 
 @Entity("transactions")
