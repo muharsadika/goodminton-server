@@ -5,16 +5,16 @@ import { Product } from "./ProductEntity"
 @Entity("admins")
 export class Admin {
   @PrimaryGeneratedColumn()
-  id!: number
+  id: number
 
   @Column({ nullable: false, unique: true })
-  email!: string
+  email: string
 
   @Column({ nullable: false })
-  password!: string
+  password: string
 
   @Column({ nullable: true })
-  fullname: number
+  fullname: string
 
   @Column({ nullable: true, unique: true })
   username: string
@@ -22,15 +22,15 @@ export class Admin {
   @Column({ nullable: true })
   profile_picture: string
 
-  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  @OneToMany(() => Transaction, (transaction) => transaction.buyer)
   orders: Transaction[]
 
   @OneToMany(() => Product, (product) => product.admin)
   products: Product[]
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   updated_at: Date
 }

@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./BuyerEntity";
+import { Buyer } from "./BuyerEntity";
 import { Product } from "./ProductEntity";
 
 @Entity("transactions")
@@ -10,13 +10,13 @@ export class Transaction {
   @Column()
   transaction_status: string
 
-  @ManyToOne(() => User, (user) => user.orders)
-  @JoinColumn({ name: "user_id" })
-  user: User
+  @ManyToOne(() => Buyer, (buyer) => buyer.orders)
+  @JoinColumn({ name: "buyer_id" })
+  buyer: Buyer
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamp with time zone" })
   updated_at: Date
 }

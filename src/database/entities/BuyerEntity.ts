@@ -35,12 +35,12 @@ export class Buyer {
     @ManyToMany(() => Product, (product) => product.users_who_buying)
     products_who_buying: Product[]
 
-    @OneToMany(() => Transaction, (transaction) => transaction.user)
+    @OneToMany(() => Transaction, (transaction) => transaction.buyer)
     orders: Transaction[]
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: "timestamp with time zone" })
     created_at: Date
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: "timestamp with time zone" })
     updated_at: Date
 }

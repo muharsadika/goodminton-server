@@ -9,10 +9,10 @@ import Env from "../../utils/variable/Env"
 
 
 
-export default new class UserService {
+export default new class AdminAuthService {
   private readonly authAdminRepository: Repository<Admin> = AppDataSource.getRepository(Admin)
 
-  async register(req: Request, res: Response): Promise<Response> {
+  async registerAdmin(req: Request, res: Response): Promise<Response> {
     try {
       const body = req.body
 
@@ -48,6 +48,7 @@ export default new class UserService {
         password: hashedPassword,
         fullname: body.fullname,
         username: body.username,
+        profile_picture: null,
       })
       const adminCreated = await this.authAdminRepository.save(adminData)
       return res
@@ -71,9 +72,10 @@ export default new class UserService {
   }
 
 
-  async login(req: Request, res: Response): Promise<Response> {
+  async loginAdmin(req: Request, res: Response): Promise<Response> {
     try {
       const body = req.body
+      // console.log(body);
 
       const { error } = adminLoginSchema.validate(body)
       if (error) {
@@ -115,6 +117,35 @@ export default new class UserService {
 
     } catch (error) {
       console.log(error)
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          data: error
+        })
+    }
+  }
+
+
+  async checkAuthAdmin(req: Request, res: Response): Promise<Response> {
+    try {
+      const auth = res.locals.auth
+      // console.log(auth);
+
+      const adminData = await this.authAdminRepository.findOne({
+        where: { id: auth.id }
+      })
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "AUTH SUCCESS",
+          data: adminData
+        })
+
+    } catch (error) {
+      console.log(error);
       return res
         .status(500)
         .json({
