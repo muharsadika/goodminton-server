@@ -1,0 +1,228 @@
+Dalam project e-commerce yang dibuat dengan Express dan TypeORM, entity yang diperlukan antara lain:
+
+User
+Product
+Category
+Order
+OrderItem
+Berikut adalah kode TypeScript untuk masing-masing entity:
+
+// User.ts
+@Entity()
+export class User {
+ @PrimaryGeneratedColumn()
+ id: number;
+
+ @Column()
+ name: string;
+
+ @Column()
+ email: string;
+
+ @Column()
+ password: string;
+
+ @OneToMany(() => Order, (order) => order.user)
+ orders: Order[];
+}
+
+// Product.ts
+@Entity()
+export class Product {
+ @PrimaryGeneratedColumn()
+ id: number;
+
+ @Column()
+ name: string;
+
+ @Column()
+ description: string;
+
+ @Column()
+ price: number;
+
+ @Column()
+ image: string;
+
+ @ManyToOne(() => Category, (category) => category.products)
+ category: Category;
+
+ @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+ orderItems: OrderItem[];
+}
+
+// Category.ts
+@Entity()
+export class Category {
+ @PrimaryGeneratedColumn()
+ id: number;
+
+ @Column()
+ name: string;
+
+ @OneToMany(() => Product, (product) => product.category)
+ products: Product[];
+}
+
+// Order.ts
+@Entity()
+export class Order {
+ @PrimaryGeneratedColumn()
+ id: number;
+
+ @Column()
+ status: string;
+
+ @ManyToOne(() => User, (user) => user.orders)
+ user: User;
+
+ @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+ orderItems: OrderItem[];
+}
+
+// OrderItem.ts
+@Entity()
+export class OrderItem {
+ @PrimaryGeneratedColumn()
+ id: number;
+
+ @Column()
+ quantity: number;
+
+ @ManyToOne(() => Product, (product) => product.orderItems)
+ product: Product;
+
+ @ManyToOne(() => Order, (order) => order.orderItems)
+ order: Order;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Dalam kasus e-commerce jual beli alat olahraga, entity yang diperlukan antara lain:
+
+User: Merupakan entitas yang menyimpan informasi pengguna, seperti nama, email, dan password.
+
+Role: Merupakan entitas yang menyimpan informasi tentang role pengguna, seperti admin, member, dll.
+
+Category: Merupakan entitas yang menyimpan informasi tentang kategori produk, seperti alat olahraga, perlengkapan olahraga, dll.
+
+Product: Merupakan entitas yang menyimpan informasi tentang produk yang dijual, seperti nama produk, deskripsi, harga, dan foto produk.
+
+Order: Merupakan entitas yang menyimpan informasi tentang pesanan pembelian produk, seperti total harga, tanggal pemesanan, dan status pemesanan (misalnya, pending, confirmed, delivered).
+
+OrderDetail: Merupakan entitas yang menyimpan informasi tentang detail pesanan, seperti jumlah produk yang dipesan, harga satuan produk, dan produk yang dipesan.
+
+Shipping: Merupakan entitas yang menyimpan informasi tentang pengiriman pesanan, seperti nama pengirim, alamat pengirim, nama penerima, alamat penerima, dan nomor resi pengiriman.
+
+Review: Merupakan entitas yang menyimpan informasi tentang ulasan produk, seperti rating produk, ulasan, dan tanggal ulasan.
+
+Cart: Merupakan entitas yang menyimpan informasi tentang keranjang belanja pengguna, seperti total harga, jumlah item, dan produk yang dipesan.
+
+Wishlist: Merupakan entitas yang menyimpan informasi tentang daftar keinginan pengguna, seperti produk yang diinginkan.
+
+Silakan sesuaikan entity dan relasi sesuai dengan kebutuhan dan spesifikasi aplikasi Anda.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+User
+id: number (generated automatically)
+firstName: string
+lastName: string
+email: string (unique)
+password: string
+roleId: number (foreign key, references Role.id)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Role
+id: number (generated automatically)
+name: string (unique)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Category
+id: number (generated automatically)
+name: string (unique)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Product
+id: number (generated automatically)
+name: string
+description: string
+price: number
+image: string
+categoryId: number (foreign key, references Category.id)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Order
+id: number (generated automatically)
+userId: number (foreign key, references User.id)
+totalPrice: number
+orderDate: Date
+orderStatus: string (pending, confirmed, delivered)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+OrderDetail
+id: number (generated automatically)
+orderId: number (foreign key, references Order.id)
+productId: number (foreign key, references Product.id)
+quantity: number
+price: number
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Shipping
+id: number (generated automatically)
+orderId: number (foreign key, references Order.id)
+senderName: string
+senderAddress: string
+recipientName: string
+recipientAddress: string
+trackingNumber: string
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Review
+id: number (generated automatically)
+userId: number (foreign key, references User.id)
+productId: number (foreign key, references Product.id)
+rating: number (1-5)
+comment: string
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Cart
+id: number (generated automatically)
+userId: number (foreign key, references User.id)
+totalPrice: number
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+CartItem
+id: number (generated automatically)
+cartId: number (foreign key, references Cart.id)
+productId: number (foreign key, references Product.id)
+quantity: number
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+Wishlist
+id: number (generated automatically)
+userId: number (foreign key, references User.id)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+
+WishlistItem
+id: number (generated automatically)
+wishlistId: number (foreign key, references Wishlist.id)
+productId: number (foreign key, references Product.id)
+createdAt: Date (generated automatically)
+updatedAt: Date (generated automatically)
+Selanjutnya, Anda dapat mendefinisikan relasi antara entity tersebut dan mengatur access control pada API yang Anda buat. Jangan lupa untuk mengimplementasikan validasi data pada server agar terjaga integritas data dan menghindari potensi celah keamanan.
+
+Jika ada pertanyaan lebih lanjut, jangan ragu untuk menanyakan. Selamat mengerjakan!
+
+Sebagai tambahan, di bawah ini adalah contoh penggunaan
