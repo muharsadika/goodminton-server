@@ -46,4 +46,28 @@ export default new class AdminBrandService {
         })
     }
   }
+
+
+  async getBrands(req: Request, res: Response): Promise<Response> {
+    try {
+      const brands = this.brandRepository.find()
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "BRAND SUCCESSFULLY",
+          data: brands
+        })
+
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        })
+    }
+  }
 }

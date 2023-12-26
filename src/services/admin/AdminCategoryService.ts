@@ -4,7 +4,7 @@ import { Category } from "../../database/entities/CategoryEntity"
 import { Request, Response } from "express"
 
 
-export default class AdminCategoryService {
+export default new class AdminCategoryService {
   private readonly categoryRepository: Repository<Category> = AppDataSource.getRepository(Category)
 
   async createCategory(req: Request, res: Response): Promise<Response> {
@@ -47,7 +47,7 @@ export default class AdminCategoryService {
     }
   }
 
-  async getCategory(req: Request, res: Response): Promise<Response> {
+  async getCategories(req: Request, res: Response): Promise<Response> {
     try {
       const categories = await this.categoryRepository.find()
       return res

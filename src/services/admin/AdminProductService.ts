@@ -91,7 +91,7 @@ export default new class AdminProductService {
   }
 
 
-  async getProduct(req: Request, res: Response): Promise<Response> {
+  async getProducts(req: Request, res: Response): Promise<Response> {
     try {
       const products = await this.productRepository.find()
       return res
