@@ -20,24 +20,16 @@ export class Product {
   @Column()
   product_price: number
 
-  @Column({
-    type: "text"
-  })
+  @Column({ type: "text" })
   product_description: string
 
-  @Column({
-    nullable: true
-  })
+  @Column({ nullable: true })
   product_image_1: string
 
-  @Column({
-    nullable: true
-  })
+  @Column({ nullable: true })
   product_image_2: string
 
-  @Column({
-    nullable: true
-  })
+  @Column({ nullable: true })
   product_image_3: string
 
   @ManyToOne(() => Brand, (brand) => brand.products, {
@@ -57,6 +49,13 @@ export class Product {
   @OneToMany(() => Transaction, (transaction) => transaction.product)
   transactions: Transaction
 
+  @ManyToOne(() => Admin, (admin) => admin.products, {
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE"
+  })
+  @JoinColumn({ name: "admin_id" })
+  admin: Admin
+
   @ManyToMany(() => Buyer, (buyer) => buyer.products_who_saved, { cascade: true })
   @JoinTable({
     name: "cart",
@@ -70,13 +69,6 @@ export class Product {
     }
   })
   users_who_saving: Buyer[]
-
-  @ManyToOne(() => Admin, (admin) => admin.products, {
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE"
-  })
-  @JoinColumn({ name: "admin_id" })
-  admin: Admin
 
   @ManyToMany(() => Buyer, (buyer) => buyer.products_who_buying, { cascade: true })
   @JoinTable({
