@@ -1,7 +1,9 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
 import { Buyer } from "./BuyerEntity";
 import { Admin } from "./AdminEntity";
 import { Transaction } from "./TransactionEntity";
+import { Brand } from "./BrandEntity";
+import { Category } from "./CategoryEntity";
 
 @Entity("products")
 export class Product {
@@ -38,12 +40,22 @@ export class Product {
   })
   product_image_3: string
 
-  @ManyToMany(() => Admin, (admin) => admin.products, {
+  @ManyToOne(() => Brand, (brand) => brand.products, {
     onUpdate: "CASCADE",
     onDelete: "CASCADE"
   })
-  @JoinColumn({ name: "admin_id" })
-  admin: Admin
+  @JoinColumn({ name: "brand_id" })
+  brand: Brand
+
+  @ManyToOne(() => Category, (category) => category.products, {
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE"
+  })
+  @JoinColumn({ name: "category_id" })
+  category: Category
+
+  @OneToMany(() => Transaction, (transaction) => transaction.product)
+  transactions: Transaction
 
   @ManyToMany(() => Buyer, (buyer) => buyer.products_who_saved, { cascade: true })
   @JoinTable({
@@ -58,6 +70,13 @@ export class Product {
     }
   })
   users_who_saving: Buyer[]
+
+  @ManyToOne(() => Admin, (admin) => admin.products, {
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE"
+  })
+  @JoinColumn({ name: "admin_id" })
+  admin: Admin
 
   @ManyToMany(() => Buyer, (buyer) => buyer.products_who_buying, { cascade: true })
   @JoinTable({

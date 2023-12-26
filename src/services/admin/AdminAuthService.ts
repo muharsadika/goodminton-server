@@ -10,13 +10,13 @@ import Env from "../../utils/variable/Env"
 
 
 export default new class AdminAuthService {
-  private readonly authAdminRepository: Repository<Admin> = AppDataSource.getRepository(Admin)
+  private readonly adminAuthRepository: Repository<Admin> = AppDataSource.getRepository(Admin)
 
   async registerAdmin(req: Request, res: Response): Promise<Response> {
     try {
       const body = req.body
 
-      const { error } = adminRegisterSchema.validate(body)
+      const { error, value } = adminRegisterSchema.validate(body)
       if (error) {
         return res
           .status(400)
@@ -27,11 +27,11 @@ export default new class AdminAuthService {
           })
       }
 
-      const isCheckEmailAdmin = await this.authAdminRepository.findOne({
-        where: { email: body.email }
+      const isCheckEmailAdmin = await this.adminAuthRepository.findOne({
+        where: { email: value.email }
       })
-      const isCheckUsernameAdmin = await this.authAdminRepository.findOne({
-        where: { username: body.username }
+      const isCheckUsernameAdmin = await this.adminAuthRepository.findOne({
+        where: { username: value.username }
       })
       if (isCheckEmailAdmin || isCheckUsernameAdmin) {
         return res
@@ -42,15 +42,15 @@ export default new class AdminAuthService {
           })
       }
 
-      const hashedPassword = await bycrypt.hash(body.password, 10)
-      const adminData = this.authAdminRepository.create({
-        email: body.email,
+      const hashedPassword = await bycrypt.hash(value.password, 10)
+      const adminData = this.adminAuthRepository.create({
+        email: value.email,
         password: hashedPassword,
-        fullname: body.fullname,
-        username: body.username,
+        fullname: value.fullname,
+        username: value.username,
         profile_picture: null,
       })
-      const adminCreated = await this.authAdminRepository.save(adminData)
+      const adminCreated = await this.adminAuthRepository.save(adminData)
       return res
         .status(201)
         .json({
@@ -77,7 +77,7 @@ export default new class AdminAuthService {
       const body = req.body
       // console.log(body);
 
-      const { error } = adminLoginSchema.validate(body)
+      const { error, value } = adminLoginSchema.validate(body)
       if (error) {
         return res
           .status(400)
@@ -88,11 +88,11 @@ export default new class AdminAuthService {
           })
       }
 
-      const isCheckUsername = await this.authAdminRepository.findOne({
-        where: { username: body.username }
+      const isCheckUsername = await this.adminAuthRepository.findOne({
+        where: { username: value.username }
       })
       const isCheckPassword = await bycrypt.compare(
-        body.password,
+        value.password,
         isCheckUsername.password
       )
       if (!isCheckUsername || !isCheckPassword) {
@@ -133,7 +133,7 @@ export default new class AdminAuthService {
       const auth = res.locals.auth
       // console.log(auth);
 
-      const adminData = await this.authAdminRepository.findOne({
+      const adminData = await this.adminAuthRepository.findOne({
         where: { id: auth.id }
       })
       return res
