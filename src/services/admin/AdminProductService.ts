@@ -266,11 +266,19 @@ export default new class AdminProductService {
 
       const productFind = await this.productRepository.findOne({
         where: { id: parseInt(id) },
-        relations: {
-          brand: true,
-          category: true,
-          transactions: true,
-          admin: true,
+        relations: [
+          "brand",
+          "category",
+          "transactions",
+          "admin",
+        ],
+        select: {
+          brand: {
+            brand_name: true
+          },
+          category: {
+            category_name: true
+          }
         }
       })
 

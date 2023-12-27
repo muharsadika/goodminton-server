@@ -171,7 +171,7 @@ export default new class AdminBrandService {
         }
       })
 
-      // brands.forEach((brand) => {
+      // brandsFind.forEach((brand) => {
       //   brand.products.sort((a, b) => a.id - b.id);
       // });
 
