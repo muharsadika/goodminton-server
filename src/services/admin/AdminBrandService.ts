@@ -15,6 +15,7 @@ export default new class AdminBrandService {
         where: {
           brand_name: brand_name
         }
+
       })
       if (brandNameFind) {
         return res
@@ -29,6 +30,7 @@ export default new class AdminBrandService {
         brand_name: brand_name
       })
       const brandCreated = await this.brandRepository.save(brandData)
+
       return res
         .status(201)
         .json({
@@ -49,7 +51,7 @@ export default new class AdminBrandService {
     }
   }
 
-
+  
   async updateBrand(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
@@ -112,6 +114,7 @@ export default new class AdminBrandService {
   async deleteBrand(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+
       const brandIdFind = await this.brandRepository.findOne({
         where: {
           id: parseInt(id)
@@ -153,6 +156,7 @@ export default new class AdminBrandService {
   async getBrands(req: Request, res: Response): Promise<Response> {
     try {
       const brands = await this.brandRepository.find({
+
         order: {
           brand_name: "ASC"
         },

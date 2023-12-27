@@ -2,6 +2,7 @@ import AdminProductController from "../../controllers/admin/AdminProductControll
 import { jwtAuth } from "../../middlewares/jwtAuth"
 import { Router } from "express"
 
+
 const AdminProductRoute = Router()
 
 AdminProductRoute.post("/admin/create-product", jwtAuth, AdminProductController.createProduct)

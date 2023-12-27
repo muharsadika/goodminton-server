@@ -8,7 +8,6 @@ import * as jwt from "jsonwebtoken"
 import Env from "../../utils/variable/Env"
 
 
-
 export default new class AdminAuthService {
   private readonly adminAuthRepository: Repository<Admin> = AppDataSource.getRepository(Admin)
 

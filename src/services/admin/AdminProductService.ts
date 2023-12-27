@@ -7,7 +7,6 @@ import { Brand } from "../../database/entities/BrandEntity"
 import { Category } from "../../database/entities/CategoryEntity"
 
 
-
 export default new class AdminProductService {
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
   private readonly brandRepository: Repository<Brand> = AppDataSource.getRepository(Brand)

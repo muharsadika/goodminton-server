@@ -2,6 +2,7 @@ import AdminCategoryController from "../../controllers/admin/AdminCategoryContro
 import { jwtAuth } from "../../middlewares/jwtAuth"
 import { Router } from "express"
 
+
 const AdminCategoryRoute = Router()
 
 AdminCategoryRoute.post("/admin/create-category", jwtAuth, AdminCategoryController.createCategory)

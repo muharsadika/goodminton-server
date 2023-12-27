@@ -3,7 +3,6 @@ import * as jwt from "jsonwebtoken"
 import Env from "../utils/variable/Env";
 
 
-
 export function jwtAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const Authorization = req.headers.authorization

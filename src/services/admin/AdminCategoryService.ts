@@ -15,6 +15,7 @@ export default new class AdminCategoryService {
       const isCheckNameCategory = await this.categoryRepository.findOne({
         where: { category_name: category_name }
       })
+
       if (isCheckNameCategory) {
         return res
           .status(400)
@@ -27,7 +28,9 @@ export default new class AdminCategoryService {
       const categoryData = this.categoryRepository.create({
         category_name: category_name
       })
+
       const categoryCreated = await this.categoryRepository.save(categoryData)
+
       return res
         .status(201)
         .json({
@@ -82,6 +85,7 @@ export default new class AdminCategoryService {
       if (category_name) categoryIdFind.category_name = category_name
 
       const categoryUpdated = await this.categoryRepository.save(categoryIdFind)
+
       return res
         .status(200)
         .json({
