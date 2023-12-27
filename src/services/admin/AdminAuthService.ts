@@ -107,6 +107,8 @@ export default new class AdminAuthService {
       const token = await jwt.sign({ id: isCheckUsername.id }, Env.EXPRESS_JWT_SECRET_KEY, {
         expiresIn: Env.EXPRESS_JWT_EXPIRED_TIME
       })
+      console.log("time", Env.EXPRESS_JWT_EXPIRED_TIME);
+
       return res
         .status(200)
         .json({

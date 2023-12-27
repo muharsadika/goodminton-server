@@ -2,6 +2,7 @@ import { Repository } from "typeorm"
 import { AppDataSource } from "../../data-source"
 import { Category } from "../../database/entities/CategoryEntity"
 import { Request, Response } from "express"
+import { Product } from "../../database/entities/ProductEntity"
 
 
 export default new class AdminCategoryService {
@@ -11,7 +12,7 @@ export default new class AdminCategoryService {
     try {
       const { category_name } = req.body
 
-      const isCheckNameCategory = this.categoryRepository.findOne({
+      const isCheckNameCategory = await this.categoryRepository.findOne({
         where: { category_name: category_name }
       })
       if (isCheckNameCategory) {
@@ -47,15 +48,173 @@ export default new class AdminCategoryService {
     }
   }
 
-  async getCategories(req: Request, res: Response): Promise<Response> {
+
+  async updateCategory(req: Request, res: Response): Promise<Response> {
     try {
-      const categories = await this.categoryRepository.find()
+      const { id } = req.params
+      const { category_name } = req.body
+
+      const categoryIdFind = await this.categoryRepository.findOne({
+        where: { id: parseInt(id) }
+      })
+      const categoryNameFind = await this.categoryRepository.findOne({
+        where: { category_name: category_name }
+      })
+
+      if (!categoryIdFind) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CATEGORY ID NOT FOUND"
+          })
+      }
+
+      if (categoryNameFind) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CATEGORY ALREADY EXISTS"
+          })
+      }
+
+      if (category_name) categoryIdFind.category_name = category_name
+
+      const categoryUpdated = await this.categoryRepository.save(categoryIdFind)
       return res
         .status(200)
         .json({
           code: 200,
           message: "CATEGORY SUCCESSFULLY",
-          data: categories
+          data: categoryUpdated
+        })
+
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        })
+    }
+  }
+
+
+  async deleteCategory(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params
+
+      const categoryIdFind = await this.categoryRepository.findOne({
+        where: { id: parseInt(id) }
+      })
+
+      if (!categoryIdFind) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CATEGORY ID NOT FOUND"
+          })
+      }
+
+      const categoryDeleted = await this.categoryRepository.delete(categoryIdFind)
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "CATEGORY DELETED",
+          data: categoryDeleted
+        })
+
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        })
+    }
+  }
+
+
+  async getCategories(req: Request, res: Response): Promise<Response> {
+    try {
+      const categories = await this.categoryRepository.find({
+        order: {
+          category_name: "ASC"
+        },
+        relations: [
+          "products"
+        ]
+      })
+
+      // const modifiedCategories = categories.map(category => {
+      //   const { products, ...rest } = category;
+      //   const modifiedProducts = products.map(product => ({
+      //     id: product.id,
+      //     product_name: product.product_name
+      //   }));
+      //   return { ...rest, products: modifiedProducts };
+      // });
+
+      const modifiedCategories = categories.map(category => {
+        return {
+          id: category.id,
+          category_name: category.category_name
+        }
+      })
+      modifiedCategories.sort((a, b) => a.id - b.id)
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "CATEGORY SUCCESSFULLY",
+          data: modifiedCategories
+        })
+
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        })
+    }
+  }
+
+
+  async getCategoryById(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params
+
+      const categoryIdFind = await this.categoryRepository.findOne({
+        where: { id: parseInt(id) }
+      })
+
+      if (!categoryIdFind) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CATEGORY ID NOT FOUND"
+          })
+      }
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "CATEGORY SUCCESSFULLY",
+          data: categoryIdFind
         })
 
     } catch (error) {

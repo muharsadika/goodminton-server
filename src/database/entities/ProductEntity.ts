@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Buyer } from "./BuyerEntity";
 import { Admin } from "./AdminEntity";
 import { Transaction } from "./TransactionEntity";
@@ -8,7 +8,7 @@ import { Category } from "./CategoryEntity";
 @Entity("products")
 export class Product {
 
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number
 
   @Column()
@@ -20,7 +20,7 @@ export class Product {
   @Column()
   product_price: number
 
-  @Column({ type: "text" })
+  @Column({ type: "text", nullable: true })
   product_description: string
 
   @Column({ nullable: true })

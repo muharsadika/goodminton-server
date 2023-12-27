@@ -20,12 +20,8 @@ AppDataSource.initialize()
         app.use("/api", AdminProductRoute)
 
         app.listen(PORT, () => {
-            console.log(
-                `
-                Server is running on port ${PORT}
-                - Developed by: @muharsadika -
-                `
-            );
+            console.log(`Server is running on port ${PORT}`)
+            console.log(`- Developed by: @muharsadika -`)
         })
     })
     .catch((error) => console.log(error))
