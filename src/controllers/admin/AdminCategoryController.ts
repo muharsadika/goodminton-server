@@ -7,7 +7,19 @@ export default new class AdminCategoryController {
     return AdminCategoryService.createCategory(req, res)  
   }
 
+  updateCategory(req: Request, res: Response): Promise<Response> {
+    return AdminCategoryService.updateCategory(req, res)
+  }
+
+  deleteCategory(req: Request, res: Response): Promise<Response> {
+    return AdminCategoryService.deleteCategory(req, res)
+  }
+
   getCategories(req: Request, res: Response): Promise<Response> {
     return AdminCategoryService.getCategories(req, res)
+  }
+
+  getCategoryById(req: Request, res: Response): Promise<Response> {
+    return AdminCategoryService.getCategoryById(req, res)
   }
 }

@@ -51,7 +51,7 @@ export default new class AdminBrandService {
     }
   }
 
-  
+
   async updateBrand(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
@@ -130,7 +130,7 @@ export default new class AdminBrandService {
           })
       }
 
-      const brandDeleted = await this.brandRepository.delete(brandIdFind)
+      const brandDeleted = await this.brandRepository.remove(brandIdFind)
 
       return res
         .status(200)
@@ -155,30 +155,37 @@ export default new class AdminBrandService {
 
   async getBrands(req: Request, res: Response): Promise<Response> {
     try {
-      const brands = await this.brandRepository.find({
-
+      const brandsFind = await this.brandRepository.find({
         order: {
-          brand_name: "ASC"
+          id: "ASC"
         },
-        relations: {
-          products: true
+        relations: [
+          "products"
+        ],
+        select: {
+          // id: true,
+          // brand_name: true,
+          products: {
+            product_name: true
+          }
         }
       })
 
-      const modifiedBrands = brands.map(brand => {
-        return {
-          id: brand.id,
-          brand_name: brand.brand_name
-        }
-      })
-      modifiedBrands.sort((a, b) => a.id - b.id)
+      // brands.forEach((brand) => {
+      //   brand.products.sort((a, b) => a.id - b.id);
+      // });
+
+      const sortedBrands = brandsFind.map((brand) => ({
+        ...brand,
+        products: brand.products.sort((a, b) => a.id - b.id),
+      }));
 
       return res
         .status(200)
         .json({
           code: 200,
           message: "BRAND SUCCESSFULLY",
-          data: modifiedBrands
+          data: sortedBrands
         })
 
     } catch (error) {
@@ -202,10 +209,26 @@ export default new class AdminBrandService {
         where: {
           id: parseInt(id)
         },
-        relations: {
-          products: true
+        relations: [
+          "products"
+        ],
+        select: {
+          // id: true,
+          // brand_name: true,
+          products: {
+            product_name: true
+          }
         }
       })
+
+      // brands.forEach((brand) => {
+      //   brand.products.sort((a, b) => a.id - b.id);
+      // });
+
+      const sortedBrand = {
+        ...brandFind,
+        products: brandFind.products.sort((a, b) => a.id - b.id),
+      };
 
       if (!brandFind) {
         return res
@@ -221,7 +244,7 @@ export default new class AdminBrandService {
         .json({
           code: 200,
           message: "BRAND SUCCESSFULLY",
-          data: brandFind
+          data: sortedBrand
         })
 
     } catch (error) {

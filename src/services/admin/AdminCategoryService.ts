@@ -124,7 +124,7 @@ export default new class AdminCategoryService {
           })
       }
 
-      const categoryDeleted = await this.categoryRepository.delete(categoryIdFind)
+      const categoryDeleted = await this.categoryRepository.remove(categoryIdFind)
 
       return res
         .status(200)
@@ -155,32 +155,29 @@ export default new class AdminCategoryService {
         },
         relations: [
           "products"
-        ]
-      })
-
-      // const modifiedCategories = categories.map(category => {
-      //   const { products, ...rest } = category;
-      //   const modifiedProducts = products.map(product => ({
-      //     id: product.id,
-      //     product_name: product.product_name
-      //   }));
-      //   return { ...rest, products: modifiedProducts };
-      // });
-
-      const modifiedCategories = categories.map(category => {
-        return {
-          id: category.id,
-          category_name: category.category_name
+        ],
+        select: {
+          products: {
+            product_name: true
+          }
         }
       })
-      modifiedCategories.sort((a, b) => a.id - b.id)
+
+      // categories.forEach((category) => {
+      //   category.products.sort((a, b) => a.id - b.id)
+      // })
+
+      const sortedCategories = categories.map((category) => ({
+        ...category,
+        products: category.products.sort((a, b) => a.id - b.id),
+      }));
 
       return res
         .status(200)
         .json({
           code: 200,
           message: "CATEGORY SUCCESSFULLY",
-          data: modifiedCategories
+          data: sortedCategories
         })
 
     } catch (error) {

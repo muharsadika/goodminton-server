@@ -188,7 +188,7 @@ export default new class AdminProductService {
           })
       }
 
-      const productDeleted = await this.productRepository.delete(productIdFind)
+      const productDeleted = await this.productRepository.remove(productIdFind)
 
       return res
         .status(200)
@@ -220,6 +220,14 @@ export default new class AdminProductService {
           category: true,
           transactions: true,
           admin: true,
+        },
+        select: {
+          brand: {
+            brand_name: true
+          },
+          category: {
+            category_name: true
+          }
         }
       })
 
