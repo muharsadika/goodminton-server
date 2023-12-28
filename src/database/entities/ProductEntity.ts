@@ -1,9 +1,10 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Buyer } from "./BuyerEntity";
 import { Admin } from "./AdminEntity";
-import { Transaction } from "./TransactionEntity";
+// import { Transaction } from "./TransactionEntity";
 import { Brand } from "./BrandEntity";
 import { Category } from "./CategoryEntity";
+import { Cart } from "./CartEntity";
 
 @Entity("products")
 export class Product {
@@ -46,43 +47,24 @@ export class Product {
   @JoinColumn({ name: "category_id" })
   category: Category
 
-  @OneToMany(() => Transaction, (transaction) => transaction.product)
-  transactions: Transaction
+  @OneToMany(() => Cart, (cart) => cart.product)
+  carts: Cart[]
 
-  @ManyToOne(() => Admin, (admin) => admin.products, {
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE"
-  })
-  @JoinColumn({ name: "admin_id" })
-  admin: Admin
+  // @OneToMany(() => Transaction, (transaction) => transaction.product)
+  // transactions: Transaction
 
-  @ManyToMany(() => Buyer, (buyer) => buyer.products_who_saved, { cascade: true })
-  @JoinTable({
-    name: "cart",
-    joinColumn: {
-      name: "product_id",
-      referencedColumnName: "id"
-    },
-    inverseJoinColumn: {
-      name: "user_id",
-      referencedColumnName: "id"
-    }
-  })
-  users_who_saving: Buyer[]
+  // @ManyToOne(() => Admin, (admin) => admin.products, {
+  //   onUpdate: "CASCADE",
+  //   onDelete: "CASCADE"
+  // })
+  // @JoinColumn({ name: "admin_id" })
+  // admin: Admin
 
-  @ManyToMany(() => Buyer, (buyer) => buyer.products_who_buying, { cascade: true })
-  @JoinTable({
-    name: "collections",
-    joinColumn: {
-      name: "product_id",
-      referencedColumnName: "id"
-    },
-    inverseJoinColumn: {
-      name: "user_id",
-      referencedColumnName: "id"
-    }
-  })
-  users_who_buying: Buyer[]
+  // @ManyToMany(() => Buyer, (buyer) => buyer.products_who_saved)
+  // users_who_saving: Buyer[]
+
+  // @ManyToMany(() => Buyer, (buyer) => buyer.products_who_buying)
+  // users_who_buying: Buyer[]
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date

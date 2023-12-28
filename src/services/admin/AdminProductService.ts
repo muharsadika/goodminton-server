@@ -218,8 +218,8 @@ export default new class AdminProductService {
         relations: {
           brand: true,
           category: true,
-          transactions: true,
-          admin: true,
+          // transactions: true,
+          // admin: true,
         },
         select: {
           brand: {

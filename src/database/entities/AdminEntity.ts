@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany } from "typeorm"
-import { Transaction } from "./TransactionEntity"
+// import { Transaction } from "./TransactionEntity"
 import { Product } from "./ProductEntity"
+
 
 @Entity("admins")
 export class Admin {
@@ -22,11 +23,11 @@ export class Admin {
   @Column({ nullable: true })
   profile_picture: string
 
-  @OneToMany(() => Transaction, (transaction) => transaction.buyer)
-  orders: Transaction[]
+  // @OneToMany(() => Transaction, (transaction) => transaction.buyer)
+  // orders: Transaction[]
 
-  @OneToMany(() => Product, (product) => product.admin)
-  products: Product[]
+  // @OneToMany(() => Product, (product) => product.admin)
+  // products: Product[]
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date

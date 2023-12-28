@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany } from "typeorm"
-import { Transaction } from "./TransactionEntity"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm"
+// import { Transaction } from "./TransactionEntity"
 import { Product } from "./ProductEntity"
+import { Cart } from "./CartEntity"
 
 @Entity("buyers")
 export class Buyer {
@@ -29,14 +30,39 @@ export class Buyer {
     @Column({ nullable: true })
     profile_picture: string
 
-    @ManyToMany(() => Product, (product) => product.users_who_saving)
-    products_who_saved: Product[]
+    @OneToMany(() => Cart, (cart) => cart.buyer)
+    carts: Cart[]
 
-    @ManyToMany(() => Product, (product) => product.users_who_buying)
-    products_who_buying: Product[]
+    // @OneToMany(() => Transaction, (transaction) => transaction.buyer)
+    // orders: Transaction[]
 
-    @OneToMany(() => Transaction, (transaction) => transaction.buyer)
-    orders: Transaction[]
+    // @ManyToMany(() => Product, (product) => product.users_who_saving, { cascade: true })
+    // @JoinTable({
+    //     name: "cart",
+    //     joinColumn: {
+    //         name: "buyer_id",
+    //         referencedColumnName: "id"
+    //     },
+    //     inverseJoinColumn: {
+    //         name: "product_id",
+    //         referencedColumnName: "id"
+    //     }
+    // })
+    // products_who_saved: Product[]
+
+    // @ManyToMany(() => Product, (product) => product.users_who_buying, { cascade: true })
+    // @JoinTable({
+    //     name: "collections",
+    //     joinColumn: {
+    //         name: "buyer_id",
+    //         referencedColumnName: "id"
+    //     },
+    //     inverseJoinColumn: {
+    //         name: "product_id",
+    //         referencedColumnName: "id"
+    //     }
+    // })
+    // products_who_buying: Product[]
 
     @CreateDateColumn({ type: "timestamp with time zone" })
     created_at: Date
