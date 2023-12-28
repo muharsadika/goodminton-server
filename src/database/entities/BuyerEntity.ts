@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, PrimaryColumn } from "typeorm"
 // import { Transaction } from "./TransactionEntity"
 import { Product } from "./ProductEntity"
 import { Cart } from "./CartEntity"
@@ -6,19 +6,19 @@ import { Cart } from "./CartEntity"
 @Entity("buyers")
 export class Buyer {
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn({ type: "uuid" })
+    id: string
 
-    @Column({ nullable: false, unique: true })
+    @Column({ unique: true })
     email: string
 
-    @Column({ nullable: false })
+    @Column()
     password: string
 
-    @Column({ nullable: true })
+    @Column()
     fullname: string
 
-    @Column({ nullable: true, unique: true })
+    @Column({ unique: true })
     username: string
 
     @Column({ nullable: true, type: "text" })
