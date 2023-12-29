@@ -94,6 +94,7 @@ export default new class AdminAuthService {
         value.password,
         isCheckUsername.password
       )
+
       if (!isCheckUsername || !isCheckPassword) {
         return res
           .status(400)
