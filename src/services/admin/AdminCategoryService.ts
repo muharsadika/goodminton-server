@@ -1,8 +1,8 @@
 import { Repository } from "typeorm"
 import { AppDataSource } from "../../data-source"
-import { Category } from "../../database/entities/CategoryEntity"
+import { Category } from "../../../database/entities/CategoryEntity"
 import { Request, Response } from "express"
-import { Product } from "../../database/entities/ProductEntity"
+import { Product } from "../../../database/entities/ProductEntity"
 
 
 export default new class AdminCategoryService {

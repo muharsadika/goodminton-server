@@ -1,6 +1,6 @@
 import { Repository } from "typeorm"
 import { AppDataSource } from "../../data-source"
-import { Brand } from "../../database/entities/BrandEntity"
+import { Brand } from "../../../database/entities/BrandEntity"
 import { Request, Response } from "express"
 
 

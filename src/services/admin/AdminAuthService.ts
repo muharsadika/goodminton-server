@@ -1,5 +1,5 @@
 import { Repository } from "typeorm"
-import { Admin } from "../../database/entities/AdminEntity"
+import { Admin } from "../../../database/entities/AdminEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
 import { adminRegisterSchema, adminLoginSchema } from "../../utils/validator/AuthValidator"

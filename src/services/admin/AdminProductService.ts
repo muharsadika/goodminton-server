@@ -1,10 +1,10 @@
 import { Repository } from "typeorm"
-import { Product } from "../../database/entities/ProductEntity"
+import { Product } from "../../../database/entities/ProductEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
 import { addProductSchema } from "../../utils/validator/ProductValidator"
-import { Brand } from "../../database/entities/BrandEntity"
-import { Category } from "../../database/entities/CategoryEntity"
+import { Brand } from "../../../database/entities/BrandEntity"
+import { Category } from "../../../database/entities/CategoryEntity"
 
 
 export default new class AdminProductService {

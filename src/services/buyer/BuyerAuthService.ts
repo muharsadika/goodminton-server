@@ -1,5 +1,5 @@
 import { Repository } from "typeorm"
-import { Buyer } from "../../database/entities/BuyerEntity"
+import { Buyer } from "../../../database/entities/BuyerEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
 import { buyerRegisterSchema, buyerLoginSchema } from "../../utils/validator/AuthValidator"
