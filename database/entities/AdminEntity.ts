@@ -3,8 +3,9 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, Up
 
 @Entity("admins")
 export class Admin {
+
   @PrimaryColumn({ type: "uuid" })
-  id: number
+  id: string
 
   @Column({ nullable: false, unique: true })
   email: string

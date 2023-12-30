@@ -58,7 +58,7 @@ export default new class AdminCategoryService {
       const { category_name } = req.body
 
       const categoryIdFind = await this.categoryRepository.findOne({
-        where: { id: parseInt(id) }
+        where: { id: id }
       })
       const categoryNameFind = await this.categoryRepository.findOne({
         where: { category_name: category_name }
@@ -112,7 +112,7 @@ export default new class AdminCategoryService {
       const { id } = req.params
 
       const categoryIdFind = await this.categoryRepository.findOne({
-        where: { id: parseInt(id) }
+        where: { id: id }
       })
 
       if (!categoryIdFind) {
@@ -169,7 +169,7 @@ export default new class AdminCategoryService {
 
       const sortedCategories = categories.map((category) => ({
         ...category,
-        products: category.products.sort((a, b) => a.id - b.id),
+        products: category.products.sort((a, b) => a.id.localeCompare(b.id)),
       }));
 
       return res
@@ -198,7 +198,7 @@ export default new class AdminCategoryService {
       const { id } = req.params
 
       const categoryIdFind = await this.categoryRepository.findOne({
-        where: { id: parseInt(id) }
+        where: { id: id }
       })
 
       if (!categoryIdFind) {

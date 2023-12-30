@@ -60,7 +60,7 @@ export default new class AdminBrandService {
 
       const brandIdFind = await this.brandRepository.findOne({
         where: {
-          id: parseInt(id)
+          id: id
         }
       })
       const brandNameFind = await this.brandRepository.findOne({
@@ -118,7 +118,7 @@ export default new class AdminBrandService {
 
       const brandIdFind = await this.brandRepository.findOne({
         where: {
-          id: parseInt(id)
+          id: id
         }
       })
 
@@ -178,7 +178,7 @@ export default new class AdminBrandService {
 
       const sortedBrands = brandsFind.map((brand) => ({
         ...brand,
-        products: brand.products.sort((a, b) => a.id - b.id),
+        products: brand.products.sort((a, b) => a.id.localeCompare(b.id)),
       }));
 
       return res
@@ -208,7 +208,7 @@ export default new class AdminBrandService {
 
       const brandFind = await this.brandRepository.findOne({
         where: {
-          id: parseInt(id)
+          id: id
         },
         relations: [
           "products"
@@ -228,7 +228,7 @@ export default new class AdminBrandService {
 
       const sortedBrand = {
         ...brandFind,
-        products: brandFind.products.sort((a, b) => a.id - b.id),
+        products: brandFind.products.sort((a, b) => a.id.localeCompare(b.id)),
       };
 
       if (!brandFind) {

@@ -6,6 +6,7 @@ import { adminRegisterSchema, adminLoginSchema } from "../../utils/validator/Aut
 import * as bycrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import Env from "../../utils/variable/Env"
+import { v4 as uuidv4 } from 'uuid'
 
 
 export default new class AdminAuthService {
@@ -46,6 +47,7 @@ export default new class AdminAuthService {
       const hashedPassword = await bycrypt.hash(value.password, 10)
 
       const adminData = this.adminAuthRepository.create({
+        id: uuidv4(),
         email: value.email,
         password: hashedPassword,
         fullname: value.fullname,

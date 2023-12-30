@@ -113,7 +113,7 @@ export default new class AdminProductService {
       const { id } = req.params
 
       const productFind = await this.productRepository.findOne({
-        where: { id: parseInt(id) }
+        where: { id: id }
       })
 
       if (!productFind) {
@@ -185,7 +185,7 @@ export default new class AdminProductService {
       const { id } = req.params
 
       const productIdFind = await this.productRepository.findOne({
-        where: { id: parseInt(id) }
+        where: { id: id }
       })
 
       if (!productIdFind) {
@@ -282,7 +282,7 @@ export default new class AdminProductService {
       const { id } = req.params
 
       const productFind = await this.productRepository.findOne({
-        where: { id: parseInt(id) },
+        where: { id: id },
         relations: [
           "brand",
           "category",
