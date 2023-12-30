@@ -1,8 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, PrimaryColumn } from "typeorm"
-// import { Transaction } from "./TransactionEntity"
-import { Product } from "./ProductEntity"
 import { Cart } from "./CartEntity"
 import { Order } from "./OrderEntity"
+
 
 @Entity("buyers")
 export class Buyer {
@@ -36,37 +35,6 @@ export class Buyer {
 
     @OneToMany(() => Order, (order) => order.buyer)
     orders: Order[]
-
-    // @OneToMany(() => Transaction, (transaction) => transaction.buyer)
-    // orders: Transaction[]
-
-    // @ManyToMany(() => Product, (product) => product.users_who_saving, { cascade: true })
-    // @JoinTable({
-    //     name: "cart",
-    //     joinColumn: {
-    //         name: "buyer_id",
-    //         referencedColumnName: "id"
-    //     },
-    //     inverseJoinColumn: {
-    //         name: "product_id",
-    //         referencedColumnName: "id"
-    //     }
-    // })
-    // products_who_saved: Product[]
-
-    // @ManyToMany(() => Product, (product) => product.users_who_buying, { cascade: true })
-    // @JoinTable({
-    //     name: "collections",
-    //     joinColumn: {
-    //         name: "buyer_id",
-    //         referencedColumnName: "id"
-    //     },
-    //     inverseJoinColumn: {
-    //         name: "product_id",
-    //         referencedColumnName: "id"
-    //     }
-    // })
-    // products_who_buying: Product[]
 
     @CreateDateColumn({ type: "timestamp with time zone" })
     created_at: Date

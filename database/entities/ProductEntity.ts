@@ -7,11 +7,12 @@ import { Category } from "./CategoryEntity";
 import { Cart } from "./CartEntity";
 import { OrderItem } from "./OrderItemEntity";
 
+
 @Entity("products")
 export class Product {
 
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryColumn({ type: "uuid" })
+  id: string
 
   @Column()
   product_name: string
@@ -57,29 +58,6 @@ export class Product {
   // PRODUCT HAS MANY ORDER ITEMS
   @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
   order_items: OrderItem[]
-
-  // @ManyToOne(() => OrderItem, (orderItem) => orderItem.product, {
-  //   onDelete: "CASCADE",
-  //   onUpdate: "CASCADE"
-  // })
-  // @JoinColumn({ name: "order_item_id" })
-  // order_item: OrderItem
-
-  // @OneToMany(() => Transaction, (transaction) => transaction.product)
-  // transactions: Transaction
-
-  // @ManyToOne(() => Admin, (admin) => admin.products, {
-  //   onUpdate: "CASCADE",
-  //   onDelete: "CASCADE"
-  // })
-  // @JoinColumn({ name: "admin_id" })
-  // admin: Admin
-
-  // @ManyToMany(() => Buyer, (buyer) => buyer.products_who_saved)
-  // users_who_saving: Buyer[]
-
-  // @ManyToMany(() => Buyer, (buyer) => buyer.products_who_buying)
-  // users_who_buying: Buyer[]
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date

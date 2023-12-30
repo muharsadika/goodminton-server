@@ -2,6 +2,7 @@ import { Column, Entity, ManyToMany, ManyToOne } from "typeorm";
 import { Order } from "./OrderEntity";
 import { Product } from "./ProductEntity";
 
+
 @Entity("order_items")
 export class OrderItem {
 

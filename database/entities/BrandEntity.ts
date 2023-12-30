@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Product } from "./ProductEntity";
 
 
 @Entity("brands")
 export class Brand {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryColumn({ type: "uuid" })
+  id: string
 
   @Column()
   brand_name: string

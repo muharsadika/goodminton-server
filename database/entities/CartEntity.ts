@@ -5,8 +5,9 @@ import { Product } from "./ProductEntity";
 
 @Entity("carts")
 export class Cart {
-  @PrimaryGeneratedColumn()
-  id: number
+
+  @PrimaryColumn({ type: "uuid" })
+  id: string
 
   @ManyToOne(() => Buyer, (buyer) => buyer.carts, {
     onUpdate: "CASCADE",

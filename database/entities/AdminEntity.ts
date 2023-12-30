@@ -1,11 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany } from "typeorm"
-// import { Transaction } from "./TransactionEntity"
-import { Product } from "./ProductEntity"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, PrimaryColumn } from "typeorm"
 
 
 @Entity("admins")
 export class Admin {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({ type: "uuid" })
   id: number
 
   @Column({ nullable: false, unique: true })
@@ -22,12 +20,6 @@ export class Admin {
 
   @Column({ nullable: true })
   profile_picture: string
-
-  // @OneToMany(() => Transaction, (transaction) => transaction.buyer)
-  // orders: Transaction[]
-
-  // @OneToMany(() => Product, (product) => product.admin)
-  // products: Product[]
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date
