@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { Order } from "./OrderEntity";
 import { Product } from "./ProductEntity";
 
@@ -6,12 +6,22 @@ import { Product } from "./ProductEntity";
 @Entity("order_items")
 export class OrderItem {
 
-  @Column({ type: "uuid" })
-  order_item_id: string
+  @PrimaryColumn({ type: "uuid" })
+  id: string
 
-  @ManyToOne(() => Order, (order) => order.order_items)
+  // ORDER HAS MANY ORDER ITEMS
+  @ManyToOne(() => Order, (order) => order.order_items, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn({ name: "order_id" })
   order: Order
 
-  @ManyToOne(() => Product, (product) => product.order_items)
+  // PRODUCT HAS MANY ORDER ITEMS
+  @ManyToOne(() => Product, (product) => product.order_items, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn({ name: "product_id" })
   product: Product
 }
