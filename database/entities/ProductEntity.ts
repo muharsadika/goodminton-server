@@ -5,6 +5,7 @@ import { Admin } from "./AdminEntity";
 import { Brand } from "./BrandEntity";
 import { Category } from "./CategoryEntity";
 import { Cart } from "./CartEntity";
+import { OrderItem } from "./OrderItemEntity";
 
 @Entity("products")
 export class Product {
@@ -33,6 +34,7 @@ export class Product {
   @Column({ nullable: true })
   product_image_3: string
 
+  // PRODUCT HAS MANY BRAND
   @ManyToOne(() => Brand, (brand) => brand.products, {
     onUpdate: "CASCADE",
     onDelete: "CASCADE"
@@ -40,6 +42,7 @@ export class Product {
   @JoinColumn({ name: "brand_id" })
   brand: Brand
 
+  // PRODUCT HAS MANY CATEGORIES
   @ManyToOne(() => Category, (category) => category.products, {
     onUpdate: "CASCADE",
     onDelete: "CASCADE"
@@ -47,8 +50,20 @@ export class Product {
   @JoinColumn({ name: "category_id" })
   category: Category
 
+  // PRODUCT HAS MANY CART
   @OneToMany(() => Cart, (cart) => cart.product)
   carts: Cart[]
+
+  // PRODUCT HAS MANY ORDER ITEMS
+  @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+  order_items: OrderItem[]
+
+  // @ManyToOne(() => OrderItem, (orderItem) => orderItem.product, {
+  //   onDelete: "CASCADE",
+  //   onUpdate: "CASCADE"
+  // })
+  // @JoinColumn({ name: "order_item_id" })
+  // order_item: OrderItem
 
   // @OneToMany(() => Transaction, (transaction) => transaction.product)
   // transactions: Transaction

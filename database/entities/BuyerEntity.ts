@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, Up
 // import { Transaction } from "./TransactionEntity"
 import { Product } from "./ProductEntity"
 import { Cart } from "./CartEntity"
+import { Order } from "./OrderEntity"
 
 @Entity("buyers")
 export class Buyer {
@@ -32,6 +33,9 @@ export class Buyer {
 
     @OneToMany(() => Cart, (cart) => cart.buyer)
     carts: Cart[]
+
+    @OneToMany(() => Order, (order) => order.buyer)
+    orders: Order[]
 
     // @OneToMany(() => Transaction, (transaction) => transaction.buyer)
     // orders: Transaction[]
