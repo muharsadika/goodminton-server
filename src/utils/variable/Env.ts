@@ -17,4 +17,8 @@ export default class Env {
   static EXPRESS_JWT_EXPIRED_TIME: number = parseInt(process.env.EXPRESS_JWT_EXPIRED_TIME)
 
   static EXPRESS_PORT: string = process.env.EXPRESS_PORT
+
+  static EXPRESS_CLOUDINARY_CLOUD_NAME: string = process.env.EXPRESS_CLOUDINARY_CLOUD_NAME
+  static EXPRESS_CLOUDINARY_API_KEY: string = process.env.EXPRESS_CLOUDINARY_API_KEY
+  static EXPRESS_CLOUDINARY_API_SECRET: string = process.env.EXPRESS_CLOUDINARY_API_SECRET
 }

@@ -16,6 +16,7 @@ export default new class AdminAuthService {
       const body = req.body
 
       const { error, value } = adminRegisterSchema.validate(body)
+
       if (error) {
         return res
           .status(400)
@@ -32,6 +33,7 @@ export default new class AdminAuthService {
       const isCheckUsernameAdmin = await this.adminAuthRepository.findOne({
         where: { username: value.username }
       })
+
       if (isCheckEmailAdmin || isCheckUsernameAdmin) {
         return res
           .status(400)
@@ -42,6 +44,7 @@ export default new class AdminAuthService {
       }
 
       const hashedPassword = await bycrypt.hash(value.password, 10)
+
       const adminData = this.adminAuthRepository.create({
         email: value.email,
         password: hashedPassword,
@@ -49,7 +52,9 @@ export default new class AdminAuthService {
         username: value.username,
         profile_picture: null,
       })
+
       const adminCreated = await this.adminAuthRepository.save(adminData)
+
       return res
         .status(201)
         .json({

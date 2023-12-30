@@ -15,8 +15,8 @@ export default new class AdminBrandService {
         where: {
           brand_name: brand_name
         }
-
       })
+
       if (brandNameFind) {
         return res
           .status(400)
@@ -29,6 +29,7 @@ export default new class AdminBrandService {
       const brandData = this.brandRepository.create({
         brand_name: brand_name
       })
+
       const brandCreated = await this.brandRepository.save(brandData)
 
       return res

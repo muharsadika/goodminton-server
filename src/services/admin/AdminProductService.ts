@@ -5,6 +5,8 @@ import { Request, Response } from "express"
 import { addProductSchema } from "../../utils/validator/ProductValidator"
 import { Brand } from "../../../database/entities/BrandEntity"
 import { Category } from "../../../database/entities/CategoryEntity"
+import { deleteFromCloudinary, extractPublicIdFromImageUrl, uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
+import { deleteFile } from "../../utils/file/fileHelper"
 
 
 export default new class AdminProductService {
@@ -68,12 +70,18 @@ export default new class AdminProductService {
           })
       }
 
+      let cloudinary_product_image_1: string = ""
+      if (req.file?.filename) {
+        cloudinary_product_image_1 = await uploadToCloudinary(req.file)
+        deleteFile(req.file?.path)
+      }
+
       const productData = this.productRepository.create({
         product_name: value.product_name,
         product_quantity: value.product_quantity,
         product_price: value.product_price,
         product_description: value.product_description,
-        product_image_1: value.product_image_1,
+        product_image_1: cloudinary_product_image_1,
         product_image_2: value.product_image_2,
         product_image_3: value.product_image_3,
         brand: value.brand_id,
@@ -175,6 +183,7 @@ export default new class AdminProductService {
   async deleteProduct(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+
       const productIdFind = await this.productRepository.findOne({
         where: { id: parseInt(id) }
       })
@@ -186,6 +195,14 @@ export default new class AdminProductService {
             code: 400,
             message: "PRODUCT NOT FOUND"
           })
+      }
+
+      if (productIdFind.product_image_1) {
+        // await deleteFromCloudinary(productIdFind.product_image_1)
+        const publicId = extractPublicIdFromImageUrl(productIdFind.product_image_1)
+        await deleteFromCloudinary(publicId)
+        console.log("IMAGE DELETED FROM CLOUDINARY");
+
       }
 
       const productDeleted = await this.productRepository.remove(productIdFind)
