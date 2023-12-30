@@ -2,6 +2,7 @@ import { Repository } from "typeorm"
 import { AppDataSource } from "../../data-source"
 import { Brand } from "../../../database/entities/BrandEntity"
 import { Request, Response } from "express"
+import { v4 as uuidv4 } from "uuid"
 
 
 export default new class AdminBrandService {
@@ -27,6 +28,7 @@ export default new class AdminBrandService {
       }
 
       const brandData = this.brandRepository.create({
+        id: uuidv4(),
         brand_name: brand_name
       })
 

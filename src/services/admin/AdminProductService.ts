@@ -7,6 +7,7 @@ import { Brand } from "../../../database/entities/BrandEntity"
 import { Category } from "../../../database/entities/CategoryEntity"
 import { deleteFromCloudinary, extractPublicIdFromImageUrl, uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
+import { v4 as uuidv4 } from "uuid"
 
 
 export default new class AdminProductService {
@@ -77,6 +78,7 @@ export default new class AdminProductService {
       }
 
       const productData = this.productRepository.create({
+        id: uuidv4(),
         product_name: value.product_name,
         product_quantity: value.product_quantity,
         product_price: value.product_price,

@@ -3,6 +3,7 @@ import { AppDataSource } from "../../data-source"
 import { Category } from "../../../database/entities/CategoryEntity"
 import { Request, Response } from "express"
 import { Product } from "../../../database/entities/ProductEntity"
+import { v4 as uuidv4 } from "uuid"
 
 
 export default new class AdminCategoryService {
@@ -26,6 +27,7 @@ export default new class AdminCategoryService {
       }
 
       const categoryData = this.categoryRepository.create({
+        id: uuidv4(),
         category_name: category_name
       })
 
