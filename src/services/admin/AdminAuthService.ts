@@ -80,10 +80,16 @@ export default new class AdminAuthService {
 
   async loginAdmin(req: Request, res: Response): Promise<Response> {
     try {
-      const body = req.body
+      const {
+        username,
+        password
+      } = req.body
       // console.log(body);
 
-      const { error, value } = adminLoginSchema.validate(body)
+      const { error, value } = adminLoginSchema.validate({
+        username,
+        password
+      })
       if (error) {
         return res
           .status(400)
@@ -114,7 +120,7 @@ export default new class AdminAuthService {
       const token = await jwt.sign({ id: isCheckUsername.id }, Env.EXPRESS_JWT_SECRET_KEY, {
         expiresIn: Env.EXPRESS_JWT_EXPIRED_TIME
       })
-      console.log("time", Env.EXPRESS_JWT_EXPIRED_TIME);
+      // console.log("time", Env.EXPRESS_JWT_EXPIRED_TIME);
 
       return res
         .status(200)
@@ -145,6 +151,16 @@ export default new class AdminAuthService {
       const adminData = await this.adminAuthRepository.findOne({
         where: { id: auth.id }
       })
+
+      if (!adminData) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "AUTH FAILED, CHECK YOUR INPUT",
+          })
+      }
+
       return res
         .status(200)
         .json({

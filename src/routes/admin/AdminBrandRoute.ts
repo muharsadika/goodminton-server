@@ -5,10 +5,10 @@ import { Router } from "express"
 
 const AdminBrandRoute = Router()
 
-AdminBrandRoute.post("/auth/admin/create-brand", jwtAuth, AdminBrandController.createBrand)
-AdminBrandRoute.patch("/auth/admin/update-brand/:id", jwtAuth, AdminBrandController.updateBrand)
-AdminBrandRoute.delete("/auth/admin/delete-brand/:id", jwtAuth, AdminBrandController.deleteBrand)
-AdminBrandRoute.get("/auth/admin/get-brands", jwtAuth, AdminBrandController.getBrands)
-AdminBrandRoute.get("/auth/admin/get-brand/:id", jwtAuth, AdminBrandController.getBrandById)
+AdminBrandRoute.post("/admin/auth/create-brand", jwtAuth, AdminBrandController.createBrand)
+AdminBrandRoute.patch("/admin/auth/update-brand/:id", jwtAuth, AdminBrandController.updateBrand)
+AdminBrandRoute.delete("/admin/auth/delete-brand/:id", jwtAuth, AdminBrandController.deleteBrand)
+AdminBrandRoute.get("/admin/auth/get-brands", jwtAuth, AdminBrandController.getBrands)
+AdminBrandRoute.get("/admin/auth/get-brand/:id", jwtAuth, AdminBrandController.getBrandById)
 
 export default AdminBrandRoute;

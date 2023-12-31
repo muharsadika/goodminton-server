@@ -9,7 +9,6 @@ import Env from "../../utils/variable/Env"
 import { v4 as uuidv4 } from 'uuid'
 
 
-
 export default new class AuthService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
 
@@ -137,6 +136,44 @@ export default new class AuthService {
           code: 200,
           message: "LOGIN SUCCESS",
           token: token
+        })
+
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        })
+    }
+  }
+
+  async CheckAuthBuyer(req: Request, res: Response): Promise<Response> {
+    try {
+      const auth = res.locals.auth
+      // console.log(auth);
+
+      const buyerData = await this.authRepository.findOne({
+        where: { id: auth.id }
+      })
+
+      if (!buyerData) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "AUTH FAILED, CHECK YOUR INPUT",
+          })
+      }
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "AUTH SUCCESS",
+          data: buyerData
         })
 
     } catch (error) {

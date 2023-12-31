@@ -10,4 +10,8 @@ export default new class BuyerAuthController {
   loginBuyer(req: Request, res: Response): Promise<Response> {
     return BuyerAuthService.loginBuyer(req, res)
   }
+
+  CheckAuthBuyer(req: Request, res: Response): Promise<Response> {
+    return BuyerAuthService.CheckAuthBuyer(req, res)
+  }
 }
