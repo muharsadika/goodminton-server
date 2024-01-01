@@ -48,12 +48,12 @@ export default new class BuyerCartService {
         }
       })
 
+      // if product already exist in cart, just update the product quantity
       if (cartFind) {
         const cartUpdated = await this.cartRepository.save({
           ...cartFind,
           product_quantity: cartFind.product_quantity + product_quantity
         })
-
         return res
           .status(201)
           .json({
@@ -63,6 +63,7 @@ export default new class BuyerCartService {
           })
       }
 
+      // if product not exist in cart, create a new cart
       const cartData = this.cartRepository.create({
         buyer: buyerFind,
         product: productFind,
