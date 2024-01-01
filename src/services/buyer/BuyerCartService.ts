@@ -50,10 +50,27 @@ export default new class BuyerCartService {
         }
       })
 
+      // if (cartFind) {
+      //   const productQuantityUpdate = cartFind.product_quantity + product_quantity
+      //   const cartUpdated = await this.cartRepository.update(cartFind.id, ({
+      //     product_quantity: productQuantityUpdate
+      //     // product_quantity: cartFind.product_quantity + product_quantity
+      //   }))
+
+      //   return res
+      //     .status(201)
+      //     .json({
+      //       code: 201,
+      //       message: "CART UPDATED",
+      //       data: cartUpdated
+      //     })
+      // }
+
+      // if buyer and product already in cart
       if (cartFind) {
         cartFind.buyer = buyerFind
         cartFind.product = productFind
-        // cartFind.product_quantity = product_quantity
+        cartFind.product_quantity = product_quantity
         cartFind.product_quantity = cartFind.product_quantity + product_quantity
         const cartUpdated = await this.cartRepository.save(cartFind)
         return res
