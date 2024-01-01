@@ -3,10 +3,10 @@ import BuyerAuthController from "../../controllers/buyer/BuyerAuthController"
 import { jwtAuth } from "../../middlewares/jwtAuth"
 
 
-const buyerRoute = Router()
+const buyerAuthRoute = Router()
 
-buyerRoute.post("/buyer/register", BuyerAuthController.registerBuyer)
-buyerRoute.post("/buyer/login", BuyerAuthController.loginBuyer)
-buyerRoute.get("/buyer/auth/check-auth", jwtAuth, BuyerAuthController.CheckAuthBuyer)
+buyerAuthRoute.post("/buyer/register", BuyerAuthController.registerBuyer)
+buyerAuthRoute.post("/buyer/login", BuyerAuthController.loginBuyer)
+buyerAuthRoute.get("/buyer/auth/check-auth", jwtAuth, BuyerAuthController.CheckAuthBuyer)
 
-export default buyerRoute
+export default buyerAuthRoute

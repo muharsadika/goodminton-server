@@ -7,6 +7,7 @@ import AdminBrandRoute from "./routes/admin/AdminBrandRoute"
 import AdminCategoryRoute from "./routes/admin/AdminCategoryRoute"
 import AdminProductRoute from "./routes/admin/AdminProductRoute"
 import BuyerAuthRoute from "./routes/buyer/BuyerAuthRoute"
+import BuyerCartRoute from "./routes/buyer/BuyerCartRoute"
 
 AppDataSource.initialize()
     .then(() => {
@@ -21,7 +22,7 @@ AppDataSource.initialize()
         app.use("/api", AdminProductRoute)
 
         app.use("/api", BuyerAuthRoute)
-
+        app.use("/api", BuyerCartRoute)
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)
             console.log(`- Developed by: @muharsadika -`)

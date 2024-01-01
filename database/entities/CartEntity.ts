@@ -24,5 +24,5 @@ export class Cart {
   product: Product
 
   @Column()
-  quantity: number
+  product_quantity: number
 }

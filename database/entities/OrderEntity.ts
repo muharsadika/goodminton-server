@@ -6,7 +6,6 @@ import { OrderItem } from "./OrderItemEntity";
 
 @Entity("orders")
 export class Order {
-
   @PrimaryColumn({ type: "uuid" })
   id: string
 

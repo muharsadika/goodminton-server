@@ -8,6 +8,6 @@ export const addProductSchema = joi.object({
   product_image_1: joi.string(),
   product_image_2: joi.string(),
   product_image_3: joi.string(),
-  brand_id: joi.number().required(),
-  category_id: joi.number().required()
+  brand_id: joi.string().required(),
+  category_id: joi.string().required()
 })

@@ -40,21 +40,23 @@ export default new class AdminProductService {
           })
       }
 
-      const brandFind = await this.brandRepository.findOne({
+      const brandIdFind = await this.brandRepository.findOne({
         where: {
           id: value.brand_id
         }
       })
-      const categoryFind = await this.categoryRepository.findOne({
+      const categoryIdFind = await this.categoryRepository.findOne({
         where: {
           id: value.category_id
         }
       })
-      const productFind = await this.productRepository.findOne({
-        where: { product_name: value.product_name }
+      const productNameFind = await this.productRepository.findOne({
+        where: {
+          product_name: value.product_name
+        }
       })
 
-      if (!brandFind || !categoryFind) {
+      if (!brandIdFind || !categoryIdFind) {
         return res
           .status(400)
           .json({
@@ -62,7 +64,7 @@ export default new class AdminProductService {
             message: "BRAND OR CATEGORY NOT FOUND"
           })
       }
-      if (productFind) {
+      if (productNameFind) {
         return res
           .status(400)
           .json({
@@ -86,10 +88,12 @@ export default new class AdminProductService {
         product_image_1: cloudinary_product_image_1,
         product_image_2: value.product_image_2,
         product_image_3: value.product_image_3,
-        brand: value.brand_id,
-        category: value.category_id
+        brand: brandIdFind,
+        category: categoryIdFind
       })
+
       const productCreated = await this.productRepository.save(productData)
+
       return res
         .status(201)
         .json({
