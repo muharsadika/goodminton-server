@@ -1,12 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./OrderEntity";
 import { Product } from "./ProductEntity";
 
 
 @Entity("order_items")
 export class OrderItem {
-
-  @PrimaryColumn({ type: "uuid" })
+  @PrimaryGeneratedColumn("uuid")
   id: string
 
   // ORDER HAS MANY ORDER ITEMS

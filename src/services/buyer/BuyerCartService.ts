@@ -64,7 +64,6 @@ export default new class BuyerCartService {
       }
 
       const cartData = this.cartRepository.create({
-        id: uuidv4(),
         buyer: buyerFind,
         product: productFind,
         product_quantity: product_quantity

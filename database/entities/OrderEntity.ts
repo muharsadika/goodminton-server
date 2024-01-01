@@ -6,7 +6,7 @@ import { OrderItem } from "./OrderItemEntity";
 
 @Entity("orders")
 export class Order {
-  @PrimaryColumn({ type: "uuid" })
+  @PrimaryGeneratedColumn("uuid")
   id: string
 
   // ORDER HAS ONE BUYER

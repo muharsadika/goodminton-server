@@ -80,7 +80,6 @@ export default new class AdminProductService {
       }
 
       const productData = this.productRepository.create({
-        id: uuidv4(),
         product_name: value.product_name,
         product_quantity: value.product_quantity,
         product_price: value.product_price,

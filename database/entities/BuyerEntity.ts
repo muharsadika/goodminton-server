@@ -5,8 +5,7 @@ import { Order } from "./OrderEntity"
 
 @Entity("buyers")
 export class Buyer {
-
-    @PrimaryColumn({ type: "uuid" })
+    @PrimaryGeneratedColumn("uuid")
     id: string
 
     @Column({ unique: true })

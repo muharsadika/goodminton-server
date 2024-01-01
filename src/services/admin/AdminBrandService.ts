@@ -28,7 +28,6 @@ export default new class AdminBrandService {
       }
 
       const brandData = this.brandRepository.create({
-        id: uuidv4(),
         brand_name: brand_name
       })
 

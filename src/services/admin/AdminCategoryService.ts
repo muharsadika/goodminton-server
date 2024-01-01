@@ -27,7 +27,6 @@ export default new class AdminCategoryService {
       }
 
       const categoryData = this.categoryRepository.create({
-        id: uuidv4(),
         category_name: category_name
       })
 

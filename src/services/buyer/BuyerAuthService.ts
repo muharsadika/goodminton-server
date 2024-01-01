@@ -55,7 +55,6 @@ export default new class AuthService {
 
       const hashedPassword = await bycrypt.hash(value.password, 10)
       const userData = this.authRepository.create({
-        id: uuidv4(),
         email: value.email,
         password: hashedPassword,
         fullname: value.fullname,

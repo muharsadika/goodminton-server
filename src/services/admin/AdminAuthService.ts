@@ -47,7 +47,6 @@ export default new class AdminAuthService {
       const hashedPassword = await bycrypt.hash(value.password, 10)
 
       const adminData = this.adminAuthRepository.create({
-        id: uuidv4(),
         email: value.email,
         password: hashedPassword,
         fullname: value.fullname,
