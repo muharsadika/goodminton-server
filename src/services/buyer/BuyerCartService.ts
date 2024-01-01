@@ -49,12 +49,10 @@ export default new class BuyerCartService {
       })
 
       if (cartFind) {
-        const cartData = this.cartRepository.create({
+        const cartUpdated = await this.cartRepository.save({
           ...cartFind,
           product_quantity: cartFind.product_quantity + product_quantity
         })
-
-        const cartUpdated = await this.cartRepository.save(cartData)
 
         return res
           .status(201)
@@ -64,37 +62,6 @@ export default new class BuyerCartService {
             data: cartUpdated
           })
       }
-
-      // if (cartFind) {
-      //   const cartUpdated = await this.cartRepository.save({
-      //     ...cartFind,
-      //     product_quantity: cartFind.product_quantity + product_quantity
-      //   })
-
-      //   return res
-      //     .status(201)
-      //     .json({
-      //       code: 201,
-      //       message: "CART UPDATED",
-      //       data: cartUpdated
-      //     })
-      // }
-
-      // // if buyer and product already in cart
-      // if (cartFind) {
-      //   cartFind.buyer = buyerFind
-      //   cartFind.product = productFind
-      //   // cartFind.product_quantity = product_quantity
-      //   cartFind.product_quantity = cartFind.product_quantity + product_quantity
-      //   const cartUpdated = await this.cartRepository.save(cartFind)
-      //   return res
-      //     .status(201)
-      //     .json({
-      //       code: 201,
-      //       message: "CART UPDATED",
-      //       data: cartUpdated
-      //     })
-      // }
 
       const cartData = this.cartRepository.create({
         id: uuidv4(),
