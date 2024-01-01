@@ -14,20 +14,17 @@ export default new class BuyerCartService {
 
   async createCart(req: Request, res: Response): Promise<Response> {
     try {
+      const buyerActive = String(res.locals.auth.id)
       const {
-        // buyer_id,
         product_id,
         product_quantity
       } = req.body
-
-      const buyerActive = String(res.locals.auth.id)
 
       const buyerFind = await this.buyerRepository.findOne({
         where: {
           id: buyerActive
         }
       })
-
       const productFind = await this.productRepository.findOne({
         where: {
           id: product_id
@@ -43,6 +40,7 @@ export default new class BuyerCartService {
           })
       }
 
+      // find buyer and product in cart
       const cartFind = await this.cartRepository.findOne({
         where: {
           buyer: { id: buyerFind.id },
@@ -50,12 +48,28 @@ export default new class BuyerCartService {
         }
       })
 
+      if (cartFind) {
+        const cartData = this.cartRepository.create({
+          ...cartFind,
+          product_quantity: cartFind.product_quantity + product_quantity
+        })
+
+        const cartUpdated = await this.cartRepository.save(cartData)
+
+        return res
+          .status(201)
+          .json({
+            code: 201,
+            message: "CART UPDATED",
+            data: cartUpdated
+          })
+      }
+
       // if (cartFind) {
-      //   const productQuantityUpdate = cartFind.product_quantity + product_quantity
-      //   const cartUpdated = await this.cartRepository.update(cartFind.id, ({
-      //     product_quantity: productQuantityUpdate
-      //     // product_quantity: cartFind.product_quantity + product_quantity
-      //   }))
+      //   const cartUpdated = await this.cartRepository.save({
+      //     ...cartFind,
+      //     product_quantity: cartFind.product_quantity + product_quantity
+      //   })
 
       //   return res
       //     .status(201)
@@ -66,21 +80,21 @@ export default new class BuyerCartService {
       //     })
       // }
 
-      // if buyer and product already in cart
-      if (cartFind) {
-        cartFind.buyer = buyerFind
-        cartFind.product = productFind
-        cartFind.product_quantity = product_quantity
-        cartFind.product_quantity = cartFind.product_quantity + product_quantity
-        const cartUpdated = await this.cartRepository.save(cartFind)
-        return res
-          .status(201)
-          .json({
-            code: 201,
-            message: "CART UPDATED",
-            data: cartUpdated
-          })
-      }
+      // // if buyer and product already in cart
+      // if (cartFind) {
+      //   cartFind.buyer = buyerFind
+      //   cartFind.product = productFind
+      //   // cartFind.product_quantity = product_quantity
+      //   cartFind.product_quantity = cartFind.product_quantity + product_quantity
+      //   const cartUpdated = await this.cartRepository.save(cartFind)
+      //   return res
+      //     .status(201)
+      //     .json({
+      //       code: 201,
+      //       message: "CART UPDATED",
+      //       data: cartUpdated
+      //     })
+      // }
 
       const cartData = this.cartRepository.create({
         id: uuidv4(),
