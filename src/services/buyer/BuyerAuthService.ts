@@ -157,8 +157,18 @@ export default new class AuthService {
       const buyerData = await this.authRepository.findOne({
         where: { id: auth.id },
         relations: [
-          "carts.product"
-        ]
+          "carts"
+        ],
+        // select: {
+        //   id: true,
+        //   fullname: true,
+        //   username: true,
+        //   email: true,
+        //   address: true,
+        //   phone: true,
+        //   profile_picture: true,
+        //   carts: true
+        // }
       })
 
       if (!buyerData) {
