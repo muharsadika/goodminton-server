@@ -12,7 +12,7 @@ export default new class BuyerCartService {
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
   private readonly cartRepository: Repository<Cart> = AppDataSource.getRepository(Cart)
 
-  async createCart(req: Request, res: Response): Promise<Response> {
+  async addProduct(req: Request, res: Response): Promise<Response> {
     try {
       const buyerActive = String(res.locals.auth.id)
       const {
@@ -63,19 +63,61 @@ export default new class BuyerCartService {
           })
       }
 
-      // if product not exist in cart, create a new cart
-      const cartData = this.cartRepository.create({
-        buyer: buyerFind,
-        product: productFind,
-        product_quantity: product_quantity
-      })
-      const cartAdded = await this.cartRepository.save(cartData)
+      else {
+        // if product not exist in cart, create a new cart
+        const cartData = this.cartRepository.create({
+          buyer: buyerFind,
+          product: productFind,
+          product_quantity: product_quantity
+        })
+        const cartAdded = await this.cartRepository.save(cartData)
+        return res
+          .status(201)
+          .json({
+            code: 201,
+            message: "ADD TO CART",
+            data: cartAdded
+          })
+      }
+
+    } catch (error) {
+      console.log(error);
       return res
-        .status(201)
+        .status(500)
         .json({
-          code: 201,
-          message: "ADD TO CART",
-          data: cartAdded
+          code: 500,
+          message: "INTERNAL SERVER ERROR"
+        })
+    }
+  }
+
+  async deleteProduct(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params
+
+      const cartFind = await this.cartRepository.findOne({
+        where: {
+          id: id
+        }
+      })
+
+      if (!cartFind) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CART ID NOT FOUND"
+          })
+      }
+
+      const cartDeleted = await this.cartRepository.remove(cartFind)
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "CART DELETED",
+          data: cartDeleted
         })
 
     } catch (error) {
