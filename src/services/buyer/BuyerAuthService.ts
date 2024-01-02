@@ -149,6 +149,7 @@ export default new class AuthService {
     }
   }
 
+
   async CheckAuthBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const auth = res.locals.auth

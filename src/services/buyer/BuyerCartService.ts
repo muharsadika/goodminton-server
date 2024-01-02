@@ -14,7 +14,7 @@ export default new class BuyerCartService {
 
   async addProduct(req: Request, res: Response): Promise<Response> {
     try {
-      const buyerActive = String(res.locals.auth.id)
+      const buyerActive = res.locals.auth
       const {
         product_id,
         product_quantity
@@ -22,7 +22,7 @@ export default new class BuyerCartService {
 
       const buyerFind = await this.buyerRepository.findOne({
         where: {
-          id: buyerActive
+          id: buyerActive.id
         }
       })
       const productFind = await this.productRepository.findOne({

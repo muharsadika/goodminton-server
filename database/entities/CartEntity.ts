@@ -1,6 +1,7 @@
-import { Collection, Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Collection, Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Buyer } from "./BuyerEntity";
 import { Product } from "./ProductEntity";
+import { Transaction } from "./Tansaction";
 
 
 @Entity("carts")
@@ -22,6 +23,15 @@ export class Cart {
   @JoinColumn({ name: "product_id" })
   product: Product
 
+  @OneToMany(() => Transaction, (transaction) => transaction.cart)
+  transactions: Transaction
+
   @Column()
   product_quantity: number
+
+  @CreateDateColumn({ type: "timestamp with time zone" })
+  created_at: Date
+
+  @UpdateDateColumn({ type: "timestamp with time zone" })
+  updated_at: Date
 }

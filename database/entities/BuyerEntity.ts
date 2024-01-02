@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, PrimaryColumn } from "typeorm"
 import { Cart } from "./CartEntity"
 import { Order } from "./OrderEntity"
+import { Transaction } from "./Tansaction"
 
 
 @Entity("buyers")
@@ -31,6 +32,9 @@ export class Buyer {
 
     @OneToMany(() => Cart, (cart) => cart.buyer)
     carts: Cart[]
+
+    @OneToMany(() => Transaction, (transaction) => transaction.buyer)
+    transactions: Transaction[]
 
     @OneToMany(() => Order, (order) => order.buyer)
     orders: Order[]
