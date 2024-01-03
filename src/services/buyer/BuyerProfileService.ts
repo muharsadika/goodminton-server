@@ -28,7 +28,7 @@ export default new class BuyerProfileService {
           .status(400)
           .json({
             code: 400,
-            message: "AUTH FAILED, CHECK YOUR INPUT",
+            message: "AUTH FAILED, CHECK YOUR INPUTs",
           })
       }
 
