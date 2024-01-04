@@ -12,7 +12,7 @@ export default new class BuyerCartService {
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
   private readonly cartRepository: Repository<Cart> = AppDataSource.getRepository(Cart)
 
-  async addProduct(req: Request, res: Response): Promise<Response> {
+  async addCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const buyerActive = res.locals.auth
       const {
@@ -91,7 +91,7 @@ export default new class BuyerCartService {
     }
   }
 
-  async deleteProduct(req: Request, res: Response): Promise<Response> {
+  async deleteCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
 

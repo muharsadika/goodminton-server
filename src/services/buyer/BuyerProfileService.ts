@@ -2,12 +2,15 @@ import { Request, Response } from "express"
 import { Repository } from "typeorm"
 import { Buyer } from "../../../database/entities/BuyerEntity"
 import { AppDataSource } from "../../data-source"
+import { uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
+import { deleteFile } from "../../utils/file/fileHelper"
 
 
 export default new class BuyerProfileService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
-  async updateProfile(req: Request, res: Response): Promise<Response> {
+  async updateProfileBuyer(req: Request, res: Response): Promise<Response> {
     try {
+      const auth = res.locals.auth
       const {
         fullname,
         username,
@@ -16,8 +19,6 @@ export default new class BuyerProfileService {
         address,
         profile_picture
       } = req.body
-
-      const auth = res.locals.auth
 
       const buyerData = await this.authRepository.findOne({
         where: { id: auth.id }
@@ -32,21 +33,29 @@ export default new class BuyerProfileService {
           })
       }
 
-      const buyerProfileUpdate = await this.authRepository.save({
-        fullname,
-        username,
-        email,
-        phone,
-        address,
-        profile_picture
+      let clourinary_buyer_profile_picture: string = ""
+      if (req.file?.filename) {
+        clourinary_buyer_profile_picture = await uploadToCloudinary(req.file)
+        deleteFile(req.file.path)
+      }
+
+      const profileBuyerData = await this.authRepository.save({
+        fullname: fullname,
+        username: username,
+        email: email,
+        phone: phone,
+        address: address,
+        profile_picture: clourinary_buyer_profile_picture
       })
+
+      const profilePictureDataUpdated = await this.authRepository.save(profileBuyerData)
 
       return res
         .status(200)
         .json({
           code: 200,
           message: "PROFILE UPDATED",
-          data: buyerProfileUpdate
+          data: profilePictureDataUpdated
         })
 
     } catch (error) {

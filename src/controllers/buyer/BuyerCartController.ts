@@ -3,11 +3,11 @@ import BuyerCartService from "../../services/buyer/BuyerCartService"
 
 
 export default new class BuyerAuthController {
-  createCart(req: Request, res: Response): Promise<Response> {
-    return BuyerCartService.addProduct(req, res)
+  addCartBuyer(req: Request, res: Response): Promise<Response> {
+    return BuyerCartService.addCartBuyer(req, res)
   }
 
-  deleteCart(req: Request, res: Response): Promise<Response> {
-    return BuyerCartService.deleteProduct(req, res)
+  deleteCartBuyer(req: Request, res: Response): Promise<Response> {
+    return BuyerCartService.deleteCartBuyer(req, res)
   }
 }

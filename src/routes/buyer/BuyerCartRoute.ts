@@ -5,7 +5,7 @@ import { jwtAuth } from "../../middlewares/jwtAuth"
 
 const BuyerCartRoute = Router()
 
-BuyerCartRoute.post("/buyer/auth/add-cart", jwtAuth, BuyerCartController.createCart)
-BuyerCartRoute.delete("/buyer/auth/delete-cart/:id", jwtAuth, BuyerCartController.deleteCart)
+BuyerCartRoute.post("/auth/add-cart", jwtAuth, BuyerCartController.addCartBuyer)
+BuyerCartRoute.delete("/auth/delete-cart/:id", jwtAuth, BuyerCartController.deleteCartBuyer)
 
 export default BuyerCartRoute
