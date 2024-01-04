@@ -4,6 +4,9 @@ import { Product } from "./ProductEntity";
 
 @Entity("brands")
 export class Brand {
+  sort(arg0: (a: any, b: any) => any) {
+    throw new Error("Method not implemented.");
+  }
   @PrimaryGeneratedColumn("uuid")
   id: string
 

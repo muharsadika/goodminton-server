@@ -233,27 +233,28 @@ export default new class AdminProductService {
 
   async getProducts(req: Request, res: Response): Promise<Response> {
     try {
-      const products = await this.productRepository.find({
+      const productsFind = await this.productRepository.find({
         order: {
           product_name: "ASC"
         },
-        relations: {
-          brand: true,
-          category: true,
-          // transactions: true,
-          // admin: true,
-        },
+        relations: [
+          "brand",
+          "category",
+        ],
         select: {
           brand: {
+            id: true,
             brand_name: true
           },
           category: {
+            id: true,
             category_name: true
           }
         }
       })
+      
 
-      if (!products) {
+      if (!productsFind) {
         return res
           .status(400)
           .json({
@@ -267,7 +268,7 @@ export default new class AdminProductService {
         .json({
           code: 200,
           message: "PRODUCT SUCCESSFULLY",
-          data: products
+          data: productsFind
         })
 
     } catch (error) {
@@ -291,14 +292,16 @@ export default new class AdminProductService {
         relations: [
           "brand",
           "category",
-          "transactions",
-          "admin",
+          // "transactions",
+          // "admin",
         ],
         select: {
           brand: {
+            id: true,
             brand_name: true
           },
           category: {
+            id: true,
             category_name: true
           }
         }

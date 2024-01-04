@@ -150,7 +150,7 @@ export default new class AdminCategoryService {
 
   async getCategories(req: Request, res: Response): Promise<Response> {
     try {
-      const categories = await this.categoryRepository.find({
+      const categoriesFind = await this.categoryRepository.find({
         order: {
           category_name: "ASC"
         },
@@ -159,26 +159,22 @@ export default new class AdminCategoryService {
         ],
         select: {
           products: {
+            id: true,
             product_name: true
           }
         }
       })
 
-      // categories.forEach((category) => {
-      //   category.products.sort((a, b) => a.id - b.id)
-      // })
-
-      const sortedCategories = categories.map((category) => ({
-        ...category,
-        products: category.products.sort((a, b) => a.id.localeCompare(b.id)),
-      }));
+      categoriesFind.forEach((category) => {
+        category.products.sort((a, b) => a.id.localeCompare(b.id));
+      })
 
       return res
         .status(200)
         .json({
           code: 200,
           message: "CATEGORY SUCCESSFULLY",
-          data: sortedCategories
+          data: categoriesFind
         })
 
     } catch (error) {
@@ -198,11 +194,24 @@ export default new class AdminCategoryService {
     try {
       const { id } = req.params
 
-      const categoryIdFind = await this.categoryRepository.findOne({
-        where: { id: id }
+      const categoryFind = await this.categoryRepository.findOne({
+        where: {
+          id: id
+        },
+        relations: [
+          "products"
+        ],
+        select: {
+          products: {
+            id: true,
+            product_name: true
+          }
+        }
       })
 
-      if (!categoryIdFind) {
+      categoryFind.products.sort((a, b) => a.id.localeCompare(b.id));
+
+      if (!categoryFind) {
         return res
           .status(400)
           .json({
@@ -216,7 +225,7 @@ export default new class AdminCategoryService {
         .json({
           code: 200,
           message: "CATEGORY SUCCESSFULLY",
-          data: categoryIdFind
+          data: categoryFind
         })
 
     } catch (error) {

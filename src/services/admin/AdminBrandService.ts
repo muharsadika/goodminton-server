@@ -165,39 +165,23 @@ export default new class AdminBrandService {
           "products"
         ],
         select: {
-          // id: true,
-          // brand_name: true,
           products: {
-            // id: true,
+            id: true,
             product_name: true
           }
         }
       })
 
-      // brandsFind.forEach((brand) => {
-      //   brand.products.sort((a, b) => a.id - b.id);
-      // });
-
-      // const sortedBrands = brandsFind.map((brand) => ({
-      //   ...brand,
-      //   products: brand.products.map(product => ({
-      //     ...product,
-      //     id: product.id || '' // Mengatasi nilai undefined dengan nilai default atau string kosong
-      //   })).sort((a, b) => a.id.localeCompare(b.id)),
-      // }));
-
-      const sortedBrands = brandsFind.map((brand) => ({
-        ...brand,
-        products: brand.products.sort((a, b) => a.product_name.localeCompare(b.product_name)),
-      }));
-
+      brandsFind.forEach((brand) => {
+        brand.products.sort((a, b) => a.id.localeCompare(b.id));
+      });
 
       return res
         .status(200)
         .json({
           code: 200,
           message: "BRAND SUCCESSFULLY",
-          data: sortedBrands
+          data: brandsFind
         })
 
     } catch (error) {
@@ -225,22 +209,14 @@ export default new class AdminBrandService {
           "products"
         ],
         select: {
-          // id: true,
-          // brand_name: true,
           products: {
-            product_name: true
+            id: true,
+            product_name: true,
           }
         }
       })
 
-      // brands.forEach((brand) => {
-      //   brand.products.sort((a, b) => a.id - b.id);
-      // });
-
-      const sortedBrand = {
-        ...brandFind,
-        products: brandFind.products.sort((a, b) => a.id.localeCompare(b.id)),
-      };
+      brandFind.products.sort((a, b) => a.id.localeCompare(b.id));
 
       if (!brandFind) {
         return res
@@ -256,7 +232,7 @@ export default new class AdminBrandService {
         .json({
           code: 200,
           message: "BRAND SUCCESSFULLY",
-          data: sortedBrand
+          data: brandFind
         })
 
     } catch (error) {
