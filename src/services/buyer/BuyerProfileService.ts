@@ -39,21 +39,12 @@ export default new class BuyerProfileService {
         deleteFile(req.file.path)
       }
 
-      Object.assign(buyerFind, {
-        fullname,
-        username,
-        email,
-        phone,
-        address,
-        profile_picture: clourinary_buyer_profile_picture,
-      });
-
-      // if (fullname) buyerFind.fullname = fullname
-      // if (username) buyerFind.username = username
-      // if (email) buyerFind.email = email
-      // if (phone) buyerFind.phone = phone
-      // if (address) buyerFind.address = address
-      // if (clourinary_buyer_profile_picture) buyerFind.profile_picture = clourinary_buyer_profile_picture
+      if (fullname) buyerFind.fullname = fullname
+      if (username) buyerFind.username = username
+      if (email) buyerFind.email = email
+      if (phone) buyerFind.phone = phone
+      if (address) buyerFind.address = address
+      if (clourinary_buyer_profile_picture) buyerFind.profile_picture = clourinary_buyer_profile_picture
 
       const profilePictureDataUpdated = await this.authRepository.save(buyerFind)
 
