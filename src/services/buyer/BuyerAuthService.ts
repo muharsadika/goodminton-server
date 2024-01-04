@@ -7,6 +7,8 @@ import * as bycrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
 import Env from "../../utils/variable/Env"
 import { v4 as uuidv4 } from 'uuid'
+import { uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
+import { deleteFile } from "../../utils/file/fileHelper"
 
 
 export default new class AuthService {
@@ -19,13 +21,15 @@ export default new class AuthService {
         username,
         email,
         password,
+        profile_picture
       } = req.body
 
       const { error, value } = buyerRegisterSchema.validate({
         fullname,
         username,
         email,
-        password
+        password,
+        profile_picture
       })
 
       if (error) {
@@ -53,15 +57,21 @@ export default new class AuthService {
           })
       }
 
+      let clourinary_profile_picture: string = ""
+      if (req.file?.filename) {
+        clourinary_profile_picture = await uploadToCloudinary(req.file)
+        deleteFile(req.file.path)
+      }
+
       const hashedPassword = await bycrypt.hash(value.password, 10)
       const userData = this.authRepository.create({
         email: value.email,
         password: hashedPassword,
         fullname: value.fullname,
         username: value.username,
+        profile_picture: clourinary_profile_picture,
         address: null,
         phone: null,
-        profile_picture: null,
       })
       const userCreated = await this.authRepository.save(userData)
 

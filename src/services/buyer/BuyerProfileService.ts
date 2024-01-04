@@ -20,11 +20,11 @@ export default new class BuyerProfileService {
         profile_picture
       } = req.body
 
-      const buyerData = await this.authRepository.findOne({
+      const buyerFind = await this.authRepository.findOne({
         where: { id: auth.id }
       })
 
-      if (!buyerData) {
+      if (!buyerFind) {
         return res
           .status(400)
           .json({
@@ -39,16 +39,23 @@ export default new class BuyerProfileService {
         deleteFile(req.file.path)
       }
 
-      const profileBuyerData = await this.authRepository.save({
-        fullname: fullname,
-        username: username,
-        email: email,
-        phone: phone,
-        address: address,
-        profile_picture: clourinary_buyer_profile_picture
-      })
+      Object.assign(buyerFind, {
+        fullname,
+        username,
+        email,
+        phone,
+        address,
+        profile_picture: clourinary_buyer_profile_picture,
+      });
 
-      const profilePictureDataUpdated = await this.authRepository.save(profileBuyerData)
+      // if (fullname) buyerFind.fullname = fullname
+      // if (username) buyerFind.username = username
+      // if (email) buyerFind.email = email
+      // if (phone) buyerFind.phone = phone
+      // if (address) buyerFind.address = address
+      // if (clourinary_buyer_profile_picture) buyerFind.profile_picture = clourinary_buyer_profile_picture
+
+      const profilePictureDataUpdated = await this.authRepository.save(buyerFind)
 
       return res
         .status(200)
