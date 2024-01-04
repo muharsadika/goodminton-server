@@ -168,6 +168,7 @@ export default new class AdminBrandService {
           // id: true,
           // brand_name: true,
           products: {
+            // id: true,
             product_name: true
           }
         }
@@ -177,10 +178,19 @@ export default new class AdminBrandService {
       //   brand.products.sort((a, b) => a.id - b.id);
       // });
 
+      // const sortedBrands = brandsFind.map((brand) => ({
+      //   ...brand,
+      //   products: brand.products.map(product => ({
+      //     ...product,
+      //     id: product.id || '' // Mengatasi nilai undefined dengan nilai default atau string kosong
+      //   })).sort((a, b) => a.id.localeCompare(b.id)),
+      // }));
+
       const sortedBrands = brandsFind.map((brand) => ({
         ...brand,
-        products: brand.products.sort((a, b) => a.id.localeCompare(b.id)),
+        products: brand.products.sort((a, b) => a.product_name.localeCompare(b.product_name)),
       }));
+
 
       return res
         .status(200)
