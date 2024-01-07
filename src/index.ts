@@ -14,6 +14,7 @@ AppDataSource.initialize()
     .then(() => {
         const app = express()
         const PORT = Env.EXPRESS_PORT
+        app.use(cors())
 
         app.use(cors())
         app.use(express.json())
