@@ -16,14 +16,15 @@ export default new class BuyerProductService {
         .status(200)
         .json({
           code: 200,
-          products
+          data: products
         })
     } catch (error) {
       return res
         .status(500)
         .json({
           code: 500,
-          message: error
+          message: "PRODUCTS FETCH FAILED",
+          error: error
         })
     }
   }
@@ -36,14 +37,15 @@ export default new class BuyerProductService {
         .status(200)
         .json({
           code: 200,
-          product
+          data: product
         })
     } catch (error) {
       return res
         .status(500)
         .json({
           code: 500,
-          message: error
+          message: "PRODUCT FETCH FAILED",
+          error: error
         })
     }
   }

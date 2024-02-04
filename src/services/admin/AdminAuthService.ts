@@ -136,7 +136,7 @@ export default new class AdminAuthService {
         .json({
           code: 500,
           message: "INTERNAL SERVER ERROR",
-          data: error
+          error: error
         })
     }
   }

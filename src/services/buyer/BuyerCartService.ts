@@ -86,7 +86,8 @@ export default new class BuyerCartService {
         .status(500)
         .json({
           code: 500,
-          message: "INTERNAL SERVER ERROR"
+          message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }
@@ -126,7 +127,8 @@ export default new class BuyerCartService {
         .status(500)
         .json({
           code: 500,
-          message: "INTERNAL SERVER ERROR"
+          message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }

@@ -108,6 +108,7 @@ export default new class AdminProductService {
         .json({
           code: 500,
           message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }
@@ -180,6 +181,7 @@ export default new class AdminProductService {
         .json({
           code: 500,
           message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }
@@ -226,6 +228,7 @@ export default new class AdminProductService {
         .json({
           code: 500,
           message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }
@@ -252,7 +255,7 @@ export default new class AdminProductService {
           }
         }
       })
-      
+
 
       if (!productsFind) {
         return res
@@ -278,6 +281,7 @@ export default new class AdminProductService {
         .json({
           code: 500,
           message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }
@@ -331,6 +335,7 @@ export default new class AdminProductService {
         .json({
           code: 500,
           message: "INTERNAL SERVER ERROR",
+          error: error
         })
     }
   }
