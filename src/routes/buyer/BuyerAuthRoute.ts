@@ -8,7 +8,7 @@ const buyerAuthRoute = Router()
 buyerAuthRoute.post("/buyer/register", BuyerAuthController.registerBuyer)
 buyerAuthRoute.post("/buyer/login", BuyerAuthController.loginBuyer)
 buyerAuthRoute.get("/buyer/auth/check-auth",
-  // jwtAuth,
+  jwtAuth,
   BuyerAuthController.CheckAuthBuyer)
 
 export default buyerAuthRoute

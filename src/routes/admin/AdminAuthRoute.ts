@@ -8,7 +8,7 @@ const AdminAuthRoute = Router()
 AdminAuthRoute.post("/admin/register", AdminAuthController.register)
 AdminAuthRoute.post("/admin/login", AdminAuthController.login)
 AdminAuthRoute.get("/admin/auth/check-auth",
-  // jwtAuth, 
+  jwtAuth,
   AdminAuthController.checkAuth)
 
 export default AdminAuthRoute;
