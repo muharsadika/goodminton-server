@@ -19,15 +19,15 @@ AppDataSource.initialize()
 
         app.use(cors())
         app.use(express.json())
-        app.use("/api/admin", AdminAuthRoute)
-        app.use("/api/admin", AdminBrandRoute)
-        app.use("/api/admin", AdminCategoryRoute)
-        app.use("/api/admin", AdminProductRoute)
+        app.use("/api", AdminAuthRoute)
+        app.use("/api", AdminBrandRoute)
+        app.use("/api", AdminCategoryRoute)
+        app.use("/api", AdminProductRoute)
 
-        app.use("/api/buyer", BuyerAuthRoute)
-        app.use("/api/buyer", BuyerProfileRoute)
-        app.use("/api/buyer", BuyerProductRoute)
-        app.use("/api/buyer", BuyerCartRoute)
+        app.use("/api", BuyerAuthRoute)
+        app.use("/api", BuyerProfileRoute)
+        app.use("/api", BuyerProductRoute)
+        app.use("/api", BuyerCartRoute)
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)

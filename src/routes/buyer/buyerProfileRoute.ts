@@ -6,7 +6,7 @@ import uploadImage from "../../middlewares/UploadImage"
 
 const BuyerProfileRoute = Router()
 
-BuyerProfileRoute.patch("/auth/update-profile",
+BuyerProfileRoute.patch("/buyer/auth/update-profile",
   // jwtAuth,
   uploadImage.single("profile_picture"), buyerProfileController.updateProfileBuyer)
 

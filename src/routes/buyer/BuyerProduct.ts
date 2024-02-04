@@ -5,10 +5,10 @@ import { jwtAuth } from "../../middlewares/jwtAuth"
 
 const BuyerProductRoute = Router()
 
-BuyerProductRoute.get("/auth/get-products",
+BuyerProductRoute.get("/buyer/auth/get-products",
   // jwtAuth,
   BuyerProductController.getProducts)
-BuyerProductRoute.get("/auth/get-product/:id",
+BuyerProductRoute.get("/buyer/auth/get-product/:id",
   // jwtAuth,
   BuyerProductController.getProduct)
 
