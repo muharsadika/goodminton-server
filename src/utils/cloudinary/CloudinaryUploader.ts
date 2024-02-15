@@ -22,6 +22,9 @@ export const uploadToCloudinary = (file: Express.Multer.File): Promise<string> =
     const opt = { folder: "cloudinary-goodminton" }
       // , public_id = file.originalname.replace
 
+      console.log(file);
+      
+
     cloudinary.uploader.upload(file.path, opt, function (error, result) {
       if (error) {
         return reject(error)

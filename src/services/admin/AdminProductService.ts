@@ -2,7 +2,7 @@ import { Repository } from "typeorm"
 import { Product } from "../../../database/entities/ProductEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
-import { addProductSchema } from "../../utils/validator/ProductValidator"
+import { addProductSchema, updateProductSchema } from "../../utils/validator/ProductValidator"
 import { Brand } from "../../../database/entities/BrandEntity"
 import { Category } from "../../../database/entities/CategoryEntity"
 import { deleteFromCloudinary, extractPublicIdFromImageUrl, uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
@@ -29,13 +29,22 @@ export default new class AdminProductService {
         category_id
       } = req.body
 
+      // let product_image = ["", "", ""]
+
+      // if (req.files) {
+      //   for (let i = 0; i < req.files.length; i++) {
+      //     product_images[i] = await uploadToCloudinary(req.files[i])
+      //     deleteFile(req.files[i].path)
+      //   }
+      // }
+
       const { error, value } = addProductSchema.validate(req.body)
       if (error) {
         return res
           .status(400)
           .json({
             code: 400,
-            message: "REGISTER FAILED, CHECK YOUR INPUT",
+            message: "ADD PRODUCT FAILED, CHECK YOUR INPUT",
             error: error
           })
       }
@@ -143,22 +152,35 @@ export default new class AdminProductService {
         category_id
       } = req.body
 
-      const { error, value } = addProductSchema.validate(req.body)
+      const { error, value } = updateProductSchema.validate(req.body)
       if (error) {
         return res
           .status(400)
           .json({
             code: 400,
-            message: "REGISTER FAILED, CHECK YOUR INPUT",
+            message: "UPDATE PRODUCT FAILED, CHECK YOUR INPUT",
             error: error
           })
       }
+
+      console.log(req.file);
+      
+
+      let cloudinary_product_image_1: string = ""
+      if (req.file?.filename) {
+        cloudinary_product_image_1 = await uploadToCloudinary(req.file)
+        
+        deleteFile(req.file?.path)
+      }
+      console.log(cloudinary_product_image_1);
+      console.log(value.product_image_1);
+      
 
       if (value.product_name) productFind.product_name = value.product_name
       if (value.product_quantity) productFind.product_quantity = value.product_quantity
       if (value.product_price) productFind.product_price = value.product_price
       if (value.product_description) productFind.product_description = value.product_description
-      if (value.product_image_1) productFind.product_image_1 = value.product_image_1
+      if (req.file) productFind.product_image_1 = cloudinary_product_image_1
       if (value.product_image_2) productFind.product_image_2 = value.product_image_2
       if (value.product_image_3) productFind.product_image_3 = value.product_image_3
       if (value.brand_id) productFind.brand = value.brand_id

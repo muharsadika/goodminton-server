@@ -28,6 +28,7 @@ const uploadImage = multer({
     }
   },
 })
+// .array('product_image', 3)
 
 export default uploadImage
 
