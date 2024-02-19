@@ -8,6 +8,31 @@ import { deleteFile } from "../../utils/file/fileHelper"
 
 export default new class BuyerProfileService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
+
+  async getProfileBuyer(req: Request, res: Response): Promise<Response> {
+    try {
+      const auth = res.locals.auth
+      const buyer = await this.authRepository.findOne({
+        where: { id: auth.id },
+        relations: ["carts"]
+      })
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          data: buyer
+        })
+    } catch (error) {
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "PROFILE FETCH FAILED",
+          error: error
+        })
+    }
+  }
+
   async updateProfileBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const auth = res.locals.auth

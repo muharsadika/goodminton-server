@@ -163,13 +163,12 @@ export default new class AuthService {
   async CheckAuthBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const auth = res.locals.auth
-      // console.log(auth);
+      console.log(auth);
 
       const buyerData = await this.authRepository.findOne({
         where: { id: auth.id },
-        relations: [
-          "carts"
-        ],
+        // relations: ["carts"],
+
         // select: {
         //   id: true,
         //   fullname: true,

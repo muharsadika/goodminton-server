@@ -164,17 +164,17 @@ export default new class AdminProductService {
       }
 
       console.log(req.file);
-      
+
 
       let cloudinary_product_image_1: string = ""
       if (req.file?.filename) {
         cloudinary_product_image_1 = await uploadToCloudinary(req.file)
-        
+
         deleteFile(req.file?.path)
       }
       console.log(cloudinary_product_image_1);
       console.log(value.product_image_1);
-      
+
 
       if (value.product_name) productFind.product_name = value.product_name
       if (value.product_quantity) productFind.product_quantity = value.product_quantity
@@ -330,7 +330,7 @@ export default new class AdminProductService {
             id: true,
             category_name: true
           }
-        }
+        },
       })
 
       if (!productFind) {

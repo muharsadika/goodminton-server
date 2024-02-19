@@ -15,6 +15,8 @@ export default new class BuyerCartService {
   async addCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const buyerActive = res.locals.auth
+      // console.log(buyerActive);
+
       const {
         product_id,
         product_quantity
@@ -30,6 +32,8 @@ export default new class BuyerCartService {
           id: product_id
         }
       })
+      // console.log(buyerFind);
+      // console.log(productFind);
 
       if (!buyerFind || !productFind) {
         return res
@@ -51,7 +55,9 @@ export default new class BuyerCartService {
       // if product already exist in cart, just update the product quantity
       if (cartFind) {
         const cartUpdated = await this.cartRepository.save({
-          ...cartFind,
+          // ...cartFind,
+          buyer: { id: buyerFind.id },
+          product: { id: productFind.id },
           product_quantity: cartFind.product_quantity + product_quantity
         })
         return res
@@ -66,8 +72,10 @@ export default new class BuyerCartService {
       else {
         // if product not exist in cart, create a new cart
         const cartData = this.cartRepository.create({
-          buyer: buyerFind,
-          product: productFind,
+          // buyer: buyerFind,
+          // product: productFind,
+          buyer: { id: buyerFind.id },
+          product: { id: productFind.id },
           product_quantity: product_quantity
         })
         const cartAdded = await this.cartRepository.save(cartData)
