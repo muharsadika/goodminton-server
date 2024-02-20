@@ -4,23 +4,34 @@ import { Buyer } from "../../../database/entities/BuyerEntity"
 import { AppDataSource } from "../../data-source"
 import { uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
+import { Product } from "../../../database/entities/ProductEntity"
 
 
 export default new class BuyerProfileService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
+  private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
 
   async getProfileBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const auth = res.locals.auth
       const buyer = await this.authRepository.findOne({
         where: { id: auth.id },
-        relations: ["carts"]
+        relations: ["carts", "carts.product"],
       })
+
+      const buyerWithProduct = {
+        ...buyer,
+        carts: buyer.carts.map((cart) => ({
+          ...cart,
+          // product_name: cart.product.product_name,
+        })),
+      }
+
       return res
         .status(200)
         .json({
           code: 200,
-          data: buyer
+          data: buyerWithProduct
         })
     } catch (error) {
       return res
@@ -32,6 +43,7 @@ export default new class BuyerProfileService {
         })
     }
   }
+
 
   async updateProfileBuyer(req: Request, res: Response): Promise<Response> {
     try {
