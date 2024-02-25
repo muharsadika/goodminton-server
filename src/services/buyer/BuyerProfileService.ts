@@ -21,14 +21,16 @@ export default new class BuyerProfileService {
 
       const buyerWithProduct = {
         ...buyer,
-        carts: buyer.carts.map((cart) => ({
-          ...cart,
-          // product_name: cart.product.product_name,
-          subtotal: cart.product.product_price * cart.product_quantity
-        })),
-        total: buyer.carts.reduce((acc, cart) => acc + (cart.product.product_price * cart.product_quantity), 0),
+        carts: {
+          items: buyer.carts.map((cart) => ({
+            ...cart,
+            // product_name: cart.product.product_name,
+            subtotal_price: cart.product.product_price * cart.product_quantity,
+          })),
+          cart_total_quantity: buyer.carts.reduce((acc, cart) => acc + cart.product_quantity, 0),
+          cart_total_price: buyer.carts.reduce((acc, cart) => acc + (cart.product.product_price * cart.product_quantity), 0),
+        },
       }
-
       // const totalPrice = buyerWithProduct.carts.reduce((total, cart) => total + cart.subtotal, 0);
 
       return res
