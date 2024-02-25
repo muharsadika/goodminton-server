@@ -10,4 +10,8 @@ export default new class BuyerAuthController {
   deleteCartBuyer(req: Request, res: Response): Promise<Response> {
     return BuyerCartService.deleteCartBuyer(req, res)
   }
+
+  updatecartQuantity(req: Request, res: Response): Promise<Response> {
+    return BuyerCartService.updatecartQuantity(req, res)
+  }
 }

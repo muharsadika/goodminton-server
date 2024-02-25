@@ -8,8 +8,13 @@ const BuyerCartRoute = Router()
 BuyerCartRoute.post("/buyer/auth/add-cart",
   jwtAuth,
   BuyerCartController.addCartBuyer)
+
 BuyerCartRoute.delete("/buyer/auth/delete-cart/:id",
   jwtAuth,
   BuyerCartController.deleteCartBuyer)
+
+BuyerCartRoute.patch("/buyer/auth/update-cart-quantity/:id",
+  jwtAuth,
+  BuyerCartController.updatecartQuantity)
 
 export default BuyerCartRoute

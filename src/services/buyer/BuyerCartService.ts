@@ -137,4 +137,50 @@ export default new class BuyerCartService {
         })
     }
   }
+
+
+  async updatecartQuantity(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params
+      const { product_quantity } = req.body
+
+      const cartFind = await this.cartRepository.findOne({
+        where: {
+          id: id
+        }
+      })
+
+      if (!cartFind) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CART ID NOT FOUND"
+          })
+      }
+
+      const cartUpdated = await this.cartRepository.save({
+        ...cartFind,
+        product_quantity: product_quantity
+      })
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "CART UPDATED",
+          data: cartUpdated
+        })
+
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        })
+    }
+  }
 }
