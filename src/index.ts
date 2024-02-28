@@ -10,6 +10,7 @@ import BuyerAuthRoute from "./routes/buyer/BuyerAuthRoute"
 import BuyerCartRoute from "./routes/buyer/BuyerCartRoute"
 import BuyerProfileRoute from "./routes/buyer/buyerProfileRoute"
 import BuyerProductRoute from "./routes/buyer/BuyerProduct"
+import MidtransRoute from "./routes/midtrans/MidtransRoute"
 
 AppDataSource.initialize()
     .then(() => {
@@ -28,6 +29,8 @@ AppDataSource.initialize()
         app.use("/api", BuyerProfileRoute)
         app.use("/api", BuyerProductRoute)
         app.use("/api", BuyerCartRoute)
+
+        app.use("/api", MidtransRoute)
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)

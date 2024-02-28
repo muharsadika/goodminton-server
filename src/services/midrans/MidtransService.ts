@@ -2,21 +2,21 @@ import { Request, Response } from 'express'
 import { AppDataSource } from '../../data-source'
 import { Repository } from 'typeorm'
 import { Buyer } from '../../../database/entities/BuyerEntity'
-import { Midtrans } from '../../../database/entities/Midtrans'
-import { MidtransClient } from 'midtrans-client'
+import { MidtransEntity } from '../../../database/entities/Midtrans'
+import Midtrans = require('midtrans-client');
 import { v4 as uuidv4 } from 'uuid'
 
 export default new class MidtransService {
 
   private readonly buyerRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
-  private readonly midtransRepository: Repository<Midtrans> = AppDataSource.getRepository(Midtrans)
+  private readonly midtransRepository: Repository<MidtransEntity> = AppDataSource.getRepository(MidtransEntity)
 
   async MidtransTransaction(req: Request, res: Response): Promise<Response> {
     try {
-      const snap = new MidtransClient.Snap({
+      const snap = new Midtrans.Snap({
         isProduction: false,
-        clientKey: process.env.MIDTRANS_CLIENT_KEY,
-        serverKey: process.env.MIDTRANS_SERVER_KEY
+        clientKey: process.env.EXPRESS_MIDTRANS_CLIENT_KEY,
+        serverKey: process.env.EXPRESS_MIDTRANS_SERVER_KEY
       })
 
       const parameter = {
@@ -32,10 +32,10 @@ export default new class MidtransService {
           first_name: req.body.first_name,
           email: req.body.email,
           phone: req.body.phone,
+          billing_address: {
+            address: req.body.address
+          }
         },
-        shipping_address: {
-          address: req.body.address
-        }
       }
       const transaction = await snap.createTransaction(parameter)
 
@@ -44,7 +44,7 @@ export default new class MidtransService {
         transaction_status: "pending",
         gross_amount: parameter.transaction_details.gross_amount,
         // product_quantity: parameter.item_details.quantity,
-        email: parameter.customer_details.email,
+        // email: parameter.customer_details.email,
       })
       return res
         .status(200)
@@ -59,7 +59,7 @@ export default new class MidtransService {
         .status(500)
         .json({
           code: 500,
-          message: "ERROR",
+          message: "MIDRANS TRANSACTION FAILED",
           error: error
         })
     }

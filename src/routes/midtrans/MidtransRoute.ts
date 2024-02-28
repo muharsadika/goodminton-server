@@ -8,4 +8,8 @@ MidtransRoute.post("/midtrans/transaction",
   jwtAuth,
   MidtransController.MidtransTransaction)
 
+MidtransRoute.post("/midtrans/notification",
+  jwtAuth,
+  MidtransController.midtransNotification)
+
 export default MidtransRoute

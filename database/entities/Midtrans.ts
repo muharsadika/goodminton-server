@@ -1,23 +1,23 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 @Entity({ name: "midtrans" })
-export class Midtrans {
-  @PrimaryGeneratedColumn("uuid")
+export class MidtransEntity {
+  @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: true })
   order_id: string
 
-  @Column()
+  @Column({ nullable: true })
   transaction_status: string
 
-  @Column()
+  @Column({ nullable: true })
   gross_amount: number
 
-  @Column()
+  @Column({ nullable: true })
   email: string
 
-  @Column()
+  @Column({ nullable: true })
   product_quantity: number
 
   @CreateDateColumn()
