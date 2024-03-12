@@ -16,10 +16,14 @@ AppDataSource.initialize()
     .then(() => {
         const app = express()
         const PORT = Env.EXPRESS_PORT
-        app.use(cors())
 
         app.use(cors())
         app.use(express.json())
+
+        app.use("/", (req: express.Request, res: express.Response) => {
+            res.send("Server is running...")
+        })
+
         app.use("/api", AdminAuthRoute)
         app.use("/api", AdminBrandRoute)
         app.use("/api", AdminCategoryRoute)
