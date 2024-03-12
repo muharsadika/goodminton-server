@@ -11,6 +11,7 @@ import BuyerCartRoute from "./routes/buyer/BuyerCartRoute"
 import BuyerProfileRoute from "./routes/buyer/buyerProfileRoute"
 import BuyerProductRoute from "./routes/buyer/BuyerProduct"
 import MidtransRoute from "./routes/midtrans/MidtransRoute"
+import { log } from "console"
 
 AppDataSource.initialize()
     .then(() => {
@@ -19,10 +20,6 @@ AppDataSource.initialize()
 
         app.use(cors())
         app.use(express.json())
-
-        app.use("/", (req: express.Request, res: express.Response) => {
-            res.send("Server is running...")
-        })
 
         app.use("/api", AdminAuthRoute)
         app.use("/api", AdminBrandRoute)
@@ -35,6 +32,10 @@ AppDataSource.initialize()
         app.use("/api", BuyerCartRoute)
 
         app.use("/api", MidtransRoute)
+
+        app.use("/", (req: express.Request, res: express.Response) => {
+            res.send("Server is running...")
+        })
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)
