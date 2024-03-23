@@ -9,7 +9,6 @@ MidtransRoute.post("/midtrans/transaction",
   MidtransController.MidtransTransaction)
 
 MidtransRoute.post("/midtrans/notification",
-  jwtAuth,
   MidtransController.midtransNotification)
 
 export default MidtransRoute
