@@ -3,7 +3,6 @@ import { Cart } from "../../../database/entities/CartEntity"
 import { Product } from "../../../database/entities/ProductEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
-import { v4 as uuidv4 } from "uuid"
 import { Buyer } from "../../../database/entities/BuyerEntity"
 
 
@@ -11,6 +10,51 @@ export default new class BuyerCartService {
   private readonly buyerRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
   private readonly cartRepository: Repository<Cart> = AppDataSource.getRepository(Cart)
+
+  async getCartBuyer(req: Request, res: Response): Promise<Response> {
+    try {
+      const buyerActive = res.locals.auth
+
+      const carts = await this.cartRepository.find({
+        where: { buyer: { id: buyerActive.id } },
+        relations: ["product"]
+      })
+
+      if (!carts || carts.length === 0) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "CARTS NOT FOUND"
+          })
+      }
+
+      const cartsDetail = {
+        items: carts.map((cart) => ({
+          ...cart,
+          subtotal_price: cart.product.product_price * cart.product_quantity
+        })),
+        cart_total_quantity: carts.reduce((acc, cart) => acc + cart.product_quantity, 0),
+        cart_total_price: carts.reduce((acc, cart) => acc + (cart.product.product_price * cart.product_quantity), 0),
+      }
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "CART FOUND",
+          data: cartsDetail
+        })
+    }
+    catch (error) {
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: error
+        })
+    }
+  }
 
   async addCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
