@@ -6,3 +6,5 @@ tmp/
 temp/
 .env
 note.txt
+_unused
+_note
