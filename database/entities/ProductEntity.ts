@@ -1,12 +1,11 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Buyer } from "./BuyerEntity";
-import { Admin } from "./AdminEntity";
-// import { Transaction } from "./TransactionEntity";
 import { Brand } from "./BrandEntity";
 import { Category } from "./CategoryEntity";
 import { Cart } from "./CartEntity";
-import { OrderItem } from "./OrderItemEntity";
-
+// import { Buyer } from "./BuyerEntity";
+// import { Admin } from "./AdminEntity";
+// import { Transaction } from "./TransactionEntity";
+// import { OrderItem } from "./OrderItemEntity";
 
 @Entity("products")
 export class Product {
@@ -55,9 +54,9 @@ export class Product {
   @OneToMany(() => Cart, (cart) => cart.product)
   carts: Cart[]
 
-  // PRODUCT HAS MANY ORDER ITEMS
-  @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
-  order_items: OrderItem[]
+  // // PRODUCT HAS MANY ORDER ITEMS
+  // @OneToMany(() => OrderItem, (orderItem) => orderItem.product)
+  // order_items: OrderItem[]
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   created_at: Date

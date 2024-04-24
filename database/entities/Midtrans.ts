@@ -1,9 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm"
+import { Cart } from "./CartEntity"
 
 @Entity({ name: "midtrans" })
 export class MidtransEntity {
   @PrimaryGeneratedColumn()
   id: number
+
+  @Column({ nullable: true })
+  id_buyer: string
 
   @Column({ nullable: true })
   order_id: string
@@ -14,11 +18,8 @@ export class MidtransEntity {
   @Column({ nullable: true })
   gross_amount: number
 
-  @Column({ nullable: true })
-  email: string
-
-  @Column({ nullable: true })
-  product_quantity: number
+  @OneToMany(() => Cart, cart => cart.midtrans)
+  carts: Cart[];
 
   @CreateDateColumn()
   created_at: Date

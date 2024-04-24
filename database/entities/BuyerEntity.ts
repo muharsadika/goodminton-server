@@ -1,8 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, PrimaryColumn } from "typeorm"
 import { Cart } from "./CartEntity"
-import { Order } from "./OrderEntity"
-import { Transaction } from "./Tansaction"
-
+// import { Order } from "./OrderEntity"
+// import { Transaction } from "./Tansaction"
 
 @Entity("buyers")
 export class Buyer {
@@ -33,11 +32,13 @@ export class Buyer {
     @OneToMany(() => Cart, (cart) => cart.buyer)
     carts: Cart[]
 
-    @OneToMany(() => Transaction, (transaction) => transaction.buyer)
-    transactions: Transaction[]
+    // // BUYER HAS MANY TRANSACTIONS
+    // @OneToMany(() => Transaction, (transaction) => transaction.buyer)
+    // transactions: Transaction[]
 
-    @OneToMany(() => Order, (order) => order.buyer)
-    orders: Order[]
+    // // BUYER HAS MANY ORDERS
+    // @OneToMany(() => Order, (order) => order.buyer)
+    // orders: Order[]
 
     @CreateDateColumn({ type: "timestamp with time zone" })
     created_at: Date

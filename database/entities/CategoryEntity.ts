@@ -1,12 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from "typeorm"
 import { Product } from "./ProductEntity"
 
-
 @Entity("categories")
 export class Category {
-  sort(arg0: (a: any, b: any) => any) {
-    throw new Error("Method not implemented.")
-  }
+  // sort(arg0: (a: any, b: any) => any) {
+  //   throw new Error("Method not implemented.")
+  // }
 
   @PrimaryGeneratedColumn("uuid")
   id: string

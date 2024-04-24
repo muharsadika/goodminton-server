@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, ManyToMany, PrimaryColumn } from "typeorm"
 
-
 @Entity("admins")
 export class Admin {
   @PrimaryGeneratedColumn("uuid")
