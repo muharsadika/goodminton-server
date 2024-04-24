@@ -4,7 +4,6 @@ import { Buyer } from "../../../database/entities/BuyerEntity"
 import { Product } from "../../../database/entities/ProductEntity"
 import { AppDataSource } from "../../data-source"
 
-
 export default new class BuyerProductService {
   private readonly buyerRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)

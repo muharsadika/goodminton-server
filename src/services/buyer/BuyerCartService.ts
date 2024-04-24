@@ -5,12 +5,11 @@ import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
 import { Buyer } from "../../../database/entities/BuyerEntity"
 
-
 export default new class BuyerCartService {
   private readonly buyerRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
   private readonly cartRepository: Repository<Cart> = AppDataSource.getRepository(Cart)
-
+  
   async getCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const buyerActive = res.locals.auth
@@ -55,6 +54,7 @@ export default new class BuyerCartService {
         })
     }
   }
+
 
   async addCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
@@ -140,6 +140,7 @@ export default new class BuyerCartService {
         })
     }
   }
+
 
   async deleteCartBuyer(req: Request, res: Response): Promise<Response> {
     try {

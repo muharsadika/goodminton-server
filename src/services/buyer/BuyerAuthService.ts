@@ -10,10 +10,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
 
-
 export default new class AuthService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
-
+  
   async registerBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const {

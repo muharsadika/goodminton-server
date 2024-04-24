@@ -4,12 +4,9 @@ import { Buyer } from "../../../database/entities/BuyerEntity"
 import { AppDataSource } from "../../data-source"
 import { uploadToCloudinary, extractPublicIdFromImageUrl, deleteFromCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
-import { Product } from "../../../database/entities/ProductEntity"
-
 
 export default new class BuyerProfileService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
-  private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
 
   async getProfileBuyer(req: Request, res: Response): Promise<Response> {
     try {
@@ -114,6 +111,4 @@ export default new class BuyerProfileService {
         })
     }
   }
-
-  //test!
 }
