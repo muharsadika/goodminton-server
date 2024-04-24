@@ -9,9 +9,8 @@ import AdminProductRoute from "./routes/admin/AdminProductRoute"
 import BuyerAuthRoute from "./routes/buyer/BuyerAuthRoute"
 import BuyerCartRoute from "./routes/buyer/BuyerCartRoute"
 import BuyerProfileRoute from "./routes/buyer/buyerProfileRoute"
-import BuyerProductRoute from "./routes/buyer/BuyerProduct"
+import BuyerProductRoute from "./routes/buyer/BuyerProductRoute"
 import MidtransRoute from "./routes/midtrans/MidtransRoute"
-import { log } from "console"
 
 AppDataSource.initialize()
     .then(() => {
