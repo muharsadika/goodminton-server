@@ -2,23 +2,27 @@ import AdminCategoryController from "../../controllers/admin/AdminCategoryContro
 import { jwtAuth } from "../../middlewares/jwtAuth"
 import { Router } from "express"
 
-
 const AdminCategoryRoute = Router()
 
 AdminCategoryRoute.post("/admin/auth/create-category",
   // jwtAuth,
-  AdminCategoryController.createCategory)
+  AdminCategoryController.createCategory
+)
 AdminCategoryRoute.patch("/admin/auth/update-category/:id",
   // jwtAuth,
-  AdminCategoryController.updateCategory)
+  AdminCategoryController.updateCategory
+)
 AdminCategoryRoute.delete("/admin/auth/delete-category/:id",
   // jwtAuth,
-  AdminCategoryController.deleteCategory)
+  AdminCategoryController.deleteCategory
+)
 AdminCategoryRoute.get("/admin/auth/get-categories",
   // jwtAuth,
-  AdminCategoryController.getCategories)
+  AdminCategoryController.getCategories
+)
 AdminCategoryRoute.get("/admin/auth/get-category/:id",
   // jwtAuth,
-  AdminCategoryController.getCategoryById)
+  AdminCategoryController.getCategoryById
+)
 
 export default AdminCategoryRoute;

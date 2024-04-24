@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import AdminProductService from "../../services/admin/AdminProductService"
 
-
 export default new class AdminProductController {
   createProduct(req: Request, res: Response): Promise<Response> {
     return AdminProductService.createProduct(req, res)
@@ -21,5 +20,9 @@ export default new class AdminProductController {
 
   getProductById(req: Request, res: Response): Promise<Response> {
     return AdminProductService.getProductById(req, res)
+  }
+
+  getProductsByCategory(req: Request, res: Response): Promise<Response> {
+    return AdminProductService.getProductsByCategory(req, res)
   }
 }

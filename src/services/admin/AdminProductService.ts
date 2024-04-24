@@ -1,4 +1,4 @@
-import { Repository } from "typeorm"
+import { Repository, Like } from "typeorm"
 import { Product } from "../../../database/entities/ProductEntity"
 import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
@@ -8,7 +8,6 @@ import { Category } from "../../../database/entities/CategoryEntity"
 import { deleteFromCloudinary, extractPublicIdFromImageUrl, uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
 import { v4 as uuidv4 } from "uuid"
-
 
 export default new class AdminProductService {
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
@@ -359,6 +358,139 @@ export default new class AdminProductService {
           message: "INTERNAL SERVER ERROR",
           error: error
         })
+    }
+  }
+
+  
+  // async getProductsByCategory(req: Request, res: Response): Promise<Response> {
+  //   try {
+  //     const { category_id } = req.params;
+
+  //     const productsByCategory = await this.productRepository.find({
+  //       where: { category: { id: category_id } },
+  //       // relations: ["category"],
+  //       // select: {
+  //       //   category: {
+  //       //     id: true,
+  //       //     category_name: true
+  //       //   }
+  //       // }
+  //     });
+
+  //     if (!productsByCategory) {
+  //       return res
+  //         .status(404)
+  //         .json({
+  //           code: 404,
+  //           message: "Products not found for the specified category"
+  //         });
+  //     }
+
+  //     return res
+  //       .status(200)
+  //       .json({
+  //         code: 200,
+  //         message: "Products retrieved successfully by category",
+  //         data: productsByCategory
+  //       });
+
+  //   } catch (error) {
+  //     console.log(error);
+  //     return res
+  //       .status(500)
+  //       .json({
+  //         code: 500,
+  //         message: "INTERNAL SERVER ERROR",
+  //         error: error
+  //       })
+  //   }
+  // }
+
+  // async getProductsByCategory(req: Request, res: Response): Promise<Response> {
+  //   try {
+  //     const { id } = req.params;
+  //     console.log(id);
+
+
+  //     const category = await this.categoryRepository.findOne({
+  //       where: { id: id },
+  //     });
+
+
+  //     if (!category) {
+  //       return res
+  //         .status(404)
+  //         .json({
+  //           code: 404,
+  //           message: "Products not found for the specified category"
+  //         });
+  //     }
+
+  //     const productsByCategory = await this.productRepository.find({
+  //       where: {
+  //         category: { id: id }
+  //       } // Menggunakan category sebagai kriteria pencarian
+  //     });
+
+  //     if (!productsByCategory || productsByCategory.length === 0) {
+  //       return res.status(404).json({
+  //         code: 404,
+  //         message: "Products not found for the specified category"
+  //       });
+  //     }
+
+  //     return res
+  //       .status(200)
+  //       .json({
+  //         code: 200,
+  //         message: "Products retrieved successfully by category",
+  //         data: productsByCategory
+  //       })
+
+  //   } catch (error) {
+  //     console.log(error);
+  //     return res
+  //       .status(500)
+  //       .json({
+  //         code: 500,
+  //         message: "INTERNAL SERVER ERROR",
+  //         error: error
+  //       })
+  //   }
+  // }
+
+  
+  async getProductsByCategory(req: Request, res: Response): Promise<Response> {
+    try {
+      const { category } = req.params;
+
+      // const category = await this.categoryRepository.findOne({ where: { id: id } });
+
+      // if (!category) {
+      //   return res.status(404).json({ message: "Kategori tidak ditemukan" });
+      // }
+
+      const products = await this.productRepository.find({ where: { category: { category_name: category } },
+      relations: ["brand"] });
+
+      if (!products || products.length === 0) {
+        return res
+          .status(404)
+          .json({
+            message: "Produk tidak ditemukan"
+          });
+      }
+
+      return res
+        .status(200)
+        .json({
+          code: 200,
+          message: "Produk ditemukan",
+          data: products
+        });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Kesalahan server" });
     }
   }
 }

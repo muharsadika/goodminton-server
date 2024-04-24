@@ -4,7 +4,6 @@ import { Brand } from "../../../database/entities/BrandEntity"
 import { Request, Response } from "express"
 import { v4 as uuidv4 } from "uuid"
 
-
 export default new class AdminBrandService {
   private readonly brandRepository: Repository<Brand> = AppDataSource.getRepository(Brand)
 

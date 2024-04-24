@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import AdminAuthService from "../../services/admin/AdminAuthService";
 
-
 export default new class AdminAuthController {
   register(req: Request, res: Response): Promise<Response> {
     return AdminAuthService.registerAdmin(req, res)

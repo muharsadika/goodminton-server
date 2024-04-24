@@ -5,7 +5,6 @@ import { Request, Response } from "express"
 import { Product } from "../../../database/entities/ProductEntity"
 import { v4 as uuidv4 } from "uuid"
 
-
 export default new class AdminCategoryService {
   private readonly categoryRepository: Repository<Category> = AppDataSource.getRepository(Category)
 
@@ -165,9 +164,9 @@ export default new class AdminCategoryService {
         }
       })
 
-      categoriesFind.forEach((category) => {
-        category.products.sort((a, b) => a.id.localeCompare(b.id));
-      })
+      // categoriesFind.forEach((category) => {
+      //   category.products.sort((a, b) => a.id.localeCompare(b.id));
+      // })
 
       return res
         .status(200)
