@@ -6,9 +6,15 @@ const MidtransRoute = Router()
 
 MidtransRoute.post("/midtrans/transaction",
   jwtAuth,
-  MidtransController.MidtransTransaction)
+  MidtransController.MidtransTransaction
+)
 
 MidtransRoute.post("/midtrans/notification",
-  MidtransController.midtransNotification)
+  MidtransController.midtransNotification
+)
+
+MidtransRoute.get("/midtrans/get-midtrans",
+  MidtransController.getMidtrans
+)
 
 export default MidtransRoute
