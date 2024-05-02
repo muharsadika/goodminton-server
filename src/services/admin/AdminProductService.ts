@@ -1,13 +1,12 @@
-import { Repository, Like } from "typeorm"
-import { Product } from "../../../database/entities/ProductEntity"
-import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
+import { AppDataSource } from "../../data-source"
 import { addProductSchema, updateProductSchema } from "../../utils/validator/ProductValidator"
+import { Repository } from "typeorm"
+import { Product } from "../../../database/entities/ProductEntity"
 import { Brand } from "../../../database/entities/BrandEntity"
 import { Category } from "../../../database/entities/CategoryEntity"
 import { deleteFromCloudinary, extractPublicIdFromImageUrl, uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
-import { v4 as uuidv4 } from "uuid"
 
 export default new class AdminProductService {
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
@@ -38,6 +37,7 @@ export default new class AdminProductService {
       // }
 
       const { error, value } = addProductSchema.validate(req.body)
+
       if (error) {
         return res
           .status(400)
@@ -49,19 +49,15 @@ export default new class AdminProductService {
       }
 
       const brandIdFind = await this.brandRepository.findOne({
-        where: {
-          id: value.brand_id
-        }
+        where: { id: value.brand_id }
       })
+
       const categoryIdFind = await this.categoryRepository.findOne({
-        where: {
-          id: value.category_id
-        }
+        where: { id: value.category_id }
       })
+
       const productNameFind = await this.productRepository.findOne({
-        where: {
-          product_name: value.product_name
-        }
+        where: { product_name: value.product_name }
       })
 
       if (!brandIdFind || !categoryIdFind) {
@@ -72,6 +68,7 @@ export default new class AdminProductService {
             message: "BRAND OR CATEGORY NOT FOUND"
           })
       }
+
       if (productNameFind) {
         return res
           .status(400)
@@ -152,6 +149,7 @@ export default new class AdminProductService {
       } = req.body
 
       const { error, value } = updateProductSchema.validate(req.body)
+
       if (error) {
         return res
           .status(400)
@@ -162,18 +160,14 @@ export default new class AdminProductService {
           })
       }
 
-      console.log(req.file);
-
-
+      // console.log(req.file);
       let cloudinary_product_image_1: string = ""
       if (req.file?.filename) {
         cloudinary_product_image_1 = await uploadToCloudinary(req.file)
-
         deleteFile(req.file?.path)
       }
-      console.log(cloudinary_product_image_1);
-      console.log(value.product_image_1);
-
+      // console.log(cloudinary_product_image_1);
+      // console.log(value.product_image_1);
 
       if (value.product_name) productFind.product_name = value.product_name
       if (value.product_quantity) productFind.product_quantity = value.product_quantity
@@ -230,7 +224,6 @@ export default new class AdminProductService {
         const publicId = extractPublicIdFromImageUrl(productIdFind.product_image_1)
         await deleteFromCloudinary(publicId)
         console.log("IMAGE DELETED FROM CLOUDINARY");
-
       }
 
       const productDeleted = await this.productRepository.remove(productIdFind)
@@ -242,6 +235,7 @@ export default new class AdminProductService {
           message: "PRODUCT DELETED",
           data: productDeleted
         })
+
     } catch (error) {
       console.log(error);
       return res
@@ -276,7 +270,6 @@ export default new class AdminProductService {
           }
         }
       })
-
 
       if (!productsFind) {
         return res
@@ -361,117 +354,15 @@ export default new class AdminProductService {
     }
   }
 
-  
-  // async getProductsByCategory(req: Request, res: Response): Promise<Response> {
-  //   try {
-  //     const { category_id } = req.params;
 
-  //     const productsByCategory = await this.productRepository.find({
-  //       where: { category: { id: category_id } },
-  //       // relations: ["category"],
-  //       // select: {
-  //       //   category: {
-  //       //     id: true,
-  //       //     category_name: true
-  //       //   }
-  //       // }
-  //     });
-
-  //     if (!productsByCategory) {
-  //       return res
-  //         .status(404)
-  //         .json({
-  //           code: 404,
-  //           message: "Products not found for the specified category"
-  //         });
-  //     }
-
-  //     return res
-  //       .status(200)
-  //       .json({
-  //         code: 200,
-  //         message: "Products retrieved successfully by category",
-  //         data: productsByCategory
-  //       });
-
-  //   } catch (error) {
-  //     console.log(error);
-  //     return res
-  //       .status(500)
-  //       .json({
-  //         code: 500,
-  //         message: "INTERNAL SERVER ERROR",
-  //         error: error
-  //       })
-  //   }
-  // }
-
-  // async getProductsByCategory(req: Request, res: Response): Promise<Response> {
-  //   try {
-  //     const { id } = req.params;
-  //     console.log(id);
-
-
-  //     const category = await this.categoryRepository.findOne({
-  //       where: { id: id },
-  //     });
-
-
-  //     if (!category) {
-  //       return res
-  //         .status(404)
-  //         .json({
-  //           code: 404,
-  //           message: "Products not found for the specified category"
-  //         });
-  //     }
-
-  //     const productsByCategory = await this.productRepository.find({
-  //       where: {
-  //         category: { id: id }
-  //       } // Menggunakan category sebagai kriteria pencarian
-  //     });
-
-  //     if (!productsByCategory || productsByCategory.length === 0) {
-  //       return res.status(404).json({
-  //         code: 404,
-  //         message: "Products not found for the specified category"
-  //       });
-  //     }
-
-  //     return res
-  //       .status(200)
-  //       .json({
-  //         code: 200,
-  //         message: "Products retrieved successfully by category",
-  //         data: productsByCategory
-  //       })
-
-  //   } catch (error) {
-  //     console.log(error);
-  //     return res
-  //       .status(500)
-  //       .json({
-  //         code: 500,
-  //         message: "INTERNAL SERVER ERROR",
-  //         error: error
-  //       })
-  //   }
-  // }
-
-  
   async getProductsByCategory(req: Request, res: Response): Promise<Response> {
     try {
       const { category } = req.params;
 
-      // const category = await this.categoryRepository.findOne({ where: { id: id } });
-
-      // if (!category) {
-      //   return res.status(404).json({ message: "Kategori tidak ditemukan" });
-      // }
-
-      const products = await this.productRepository.find({ where: { category: { category_name: category } },
-      relations: ["brand"] });
+      const products = await this.productRepository.find({
+        where: { category: { category_name: category } },
+        relations: ["brand"]
+      });
 
       if (!products || products.length === 0) {
         return res
@@ -488,9 +379,16 @@ export default new class AdminProductService {
           message: "Produk ditemukan",
           data: products
         });
+
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ message: "Kesalahan server" });
+      return res
+        .status(500)
+        .json({
+          code: 500,
+          message: "INTERNAL SERVER ERROR",
+          error: error
+        });
     }
   }
 }

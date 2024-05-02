@@ -1,9 +1,7 @@
+import { Request, Response } from "express"
 import { Repository } from "typeorm"
 import { AppDataSource } from "../../data-source"
 import { Category } from "../../../database/entities/CategoryEntity"
-import { Request, Response } from "express"
-import { Product } from "../../../database/entities/ProductEntity"
-import { v4 as uuidv4 } from "uuid"
 
 export default new class AdminCategoryService {
   private readonly categoryRepository: Repository<Category> = AppDataSource.getRepository(Category)
@@ -55,11 +53,13 @@ export default new class AdminCategoryService {
   async updateCategory(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+
       const { category_name } = req.body
 
       const categoryIdFind = await this.categoryRepository.findOne({
         where: { id: id }
       })
+
       const categoryNameFind = await this.categoryRepository.findOne({
         where: { category_name: category_name }
       })
@@ -163,10 +163,6 @@ export default new class AdminCategoryService {
           }
         }
       })
-
-      // categoriesFind.forEach((category) => {
-      //   category.products.sort((a, b) => a.id.localeCompare(b.id));
-      // })
 
       return res
         .status(200)

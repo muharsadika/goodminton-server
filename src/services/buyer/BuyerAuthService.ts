@@ -1,18 +1,17 @@
-import { Repository } from "typeorm"
-import { Buyer } from "../../../database/entities/BuyerEntity"
-import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
+import { AppDataSource } from "../../data-source"
 import { buyerRegisterSchema, buyerLoginSchema } from "../../utils/validator/AuthValidator"
 import * as bycrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
-import Env from "../../utils/variable/Env"
-import { v4 as uuidv4 } from 'uuid'
 import { uploadToCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
+import { Repository } from "typeorm"
+import { Buyer } from "../../../database/entities/BuyerEntity"
+import Env from "../../utils/variable/Env"
 
 export default new class AuthService {
   private readonly authRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
-  
+
   async registerBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const {
@@ -44,9 +43,11 @@ export default new class AuthService {
       const usernameFind = await this.authRepository.findOne({
         where: { username: value.username }
       })
+
       const emailFind = await this.authRepository.findOne({
         where: { email: value.email }
       })
+
       if (usernameFind || emailFind) {
         return res
           .status(400)
@@ -98,13 +99,11 @@ export default new class AuthService {
   async loginBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const {
-        username,
-        password
+        username, password
       } = req.body
 
       const { error, value } = buyerLoginSchema.validate({
-        username,
-        password
+        username, password
       })
 
       if (error) {

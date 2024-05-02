@@ -1,12 +1,11 @@
-import { Repository } from "typeorm"
-import { Admin } from "../../../database/entities/AdminEntity"
-import { AppDataSource } from "../../data-source"
 import { Request, Response } from "express"
+import { AppDataSource } from "../../data-source"
 import { adminRegisterSchema, adminLoginSchema } from "../../utils/validator/AuthValidator"
 import * as bycrypt from "bcrypt"
 import * as jwt from "jsonwebtoken"
+import { Repository } from "typeorm"
+import { Admin } from "../../../database/entities/AdminEntity"
 import Env from "../../utils/variable/Env"
-import { v4 as uuidv4 } from 'uuid'
 
 export default new class AdminAuthService {
   private readonly adminAuthRepository: Repository<Admin> = AppDataSource.getRepository(Admin)
@@ -82,12 +81,12 @@ export default new class AdminAuthService {
         username,
         password
       } = req.body
-      // console.log(body);
 
       const { error, value } = adminLoginSchema.validate({
         username,
         password
       })
+
       if (error) {
         return res
           .status(400)
@@ -101,6 +100,7 @@ export default new class AdminAuthService {
       const isCheckUsername = await this.adminAuthRepository.findOne({
         where: { username: value.username }
       })
+
       const isCheckPassword = await bycrypt.compare(
         value.password,
         isCheckUsername.password
@@ -118,7 +118,6 @@ export default new class AdminAuthService {
       const token = await jwt.sign({ id: isCheckUsername.id }, Env.EXPRESS_JWT_SECRET_KEY, {
         expiresIn: Env.EXPRESS_JWT_EXPIRED_TIME
       })
-      // console.log("time", Env.EXPRESS_JWT_EXPIRED_TIME);
 
       return res
         .status(200)
@@ -144,7 +143,6 @@ export default new class AdminAuthService {
   async checkAuthAdmin(req: Request, res: Response): Promise<Response> {
     try {
       const auth = res.locals.auth
-      // console.log(auth);
 
       const adminData = await this.adminAuthRepository.findOne({
         where: { id: auth.id }
@@ -178,15 +176,4 @@ export default new class AdminAuthService {
         })
     }
   }
-
-
-  // async logout(req: Request, res: Response): Promise<Response> {
-  //   try {
-  //     const {token} = req.params
-  //     await this.
-
-  //   } catch (error) {
-
-  //   }
-  // }
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
+import { AppDataSource } from "../../data-source"
 import { Repository } from "typeorm"
 import { Buyer } from "../../../database/entities/BuyerEntity"
-import { AppDataSource } from "../../data-source"
 import { uploadToCloudinary, extractPublicIdFromImageUrl, deleteFromCloudinary } from "../../utils/cloudinary/CloudinaryUploader"
 import { deleteFile } from "../../utils/file/fileHelper"
 
@@ -11,6 +11,7 @@ export default new class BuyerProfileService {
   async getProfileBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const auth = res.locals.auth
+
       const buyer = await this.authRepository.findOne({
         where: { id: auth.id },
         relations: ["carts", "carts.product"],
@@ -36,6 +37,7 @@ export default new class BuyerProfileService {
           code: 200,
           data: buyerWithProduct
         })
+
     } catch (error) {
       return res
         .status(500)
@@ -73,7 +75,7 @@ export default new class BuyerProfileService {
           })
       }
 
-      let clourinary_buyer_profile_picture: string = ""
+      let clourinary_buyer_profile_picture: string = "";
       if (req.file?.filename) {
         if (buyerFind.profile_picture) {
           const publicId = extractPublicIdFromImageUrl(buyerFind.profile_picture);
@@ -90,14 +92,14 @@ export default new class BuyerProfileService {
       if (address) buyerFind.address = address
       if (clourinary_buyer_profile_picture) buyerFind.profile_picture = clourinary_buyer_profile_picture
 
-      const profilePictureDataUpdated = await this.authRepository.save(buyerFind)
+      const profileDataUpdated = await this.authRepository.save(buyerFind)
 
       return res
         .status(200)
         .json({
           code: 200,
           message: "PROFILE UPDATED",
-          data: profilePictureDataUpdated
+          data: profileDataUpdated
         })
 
     } catch (error) {

@@ -1,8 +1,7 @@
-import { Repository } from "typeorm"
-import { AppDataSource } from "../../data-source"
-import { Brand } from "../../../database/entities/BrandEntity"
 import { Request, Response } from "express"
-import { v4 as uuidv4 } from "uuid"
+import { AppDataSource } from "../../data-source"
+import { Repository } from "typeorm"
+import { Brand } from "../../../database/entities/BrandEntity"
 
 export default new class AdminBrandService {
   private readonly brandRepository: Repository<Brand> = AppDataSource.getRepository(Brand)
@@ -12,9 +11,7 @@ export default new class AdminBrandService {
       const { brand_name } = req.body
 
       const brandNameFind = await this.brandRepository.findOne({
-        where: {
-          brand_name: brand_name
-        }
+        where: { brand_name: brand_name }
       })
 
       if (brandNameFind) {
@@ -56,17 +53,15 @@ export default new class AdminBrandService {
   async updateBrand(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params
+
       const { brand_name } = req.body
 
       const brandIdFind = await this.brandRepository.findOne({
-        where: {
-          id: id
-        }
+        where: { id: id }
       })
+
       const brandNameFind = await this.brandRepository.findOne({
-        where: {
-          brand_name: brand_name
-        }
+        where: { brand_name: brand_name }
       })
 
       if (!brandIdFind) {
@@ -117,9 +112,7 @@ export default new class AdminBrandService {
       const { id } = req.params
 
       const brandIdFind = await this.brandRepository.findOne({
-        where: {
-          id: id
-        }
+        where: { id: id }
       })
 
       if (!brandIdFind) {

@@ -1,15 +1,15 @@
+import { Request, Response } from "express"
+import { AppDataSource } from "../../data-source"
 import { Repository } from "typeorm"
 import { Cart } from "../../../database/entities/CartEntity"
 import { Product } from "../../../database/entities/ProductEntity"
-import { AppDataSource } from "../../data-source"
-import { Request, Response } from "express"
 import { Buyer } from "../../../database/entities/BuyerEntity"
 
 export default new class BuyerCartService {
   private readonly buyerRepository: Repository<Buyer> = AppDataSource.getRepository(Buyer)
   private readonly productRepository: Repository<Product> = AppDataSource.getRepository(Product)
   private readonly cartRepository: Repository<Cart> = AppDataSource.getRepository(Cart)
-  
+
   async getCartBuyer(req: Request, res: Response): Promise<Response> {
     try {
       const buyerActive = res.locals.auth
@@ -45,6 +45,7 @@ export default new class BuyerCartService {
           data: cartsDetail
         })
     }
+
     catch (error) {
       return res
         .status(500)
@@ -66,14 +67,11 @@ export default new class BuyerCartService {
       } = req.body
 
       const buyerFind = await this.buyerRepository.findOne({
-        where: {
-          id: buyerActive.id
-        }
+        where: { id: buyerActive.id }
       })
+
       const productFind = await this.productRepository.findOne({
-        where: {
-          id: product_id
-        }
+        where: { id: product_id }
       })
 
       if (!buyerFind || !productFind) {
@@ -85,7 +83,6 @@ export default new class BuyerCartService {
           })
       }
 
-      // find buyer and product in cart
       const cartFind = await this.cartRepository.findOne({
         where: {
           buyer: { id: buyerFind.id },
@@ -93,7 +90,6 @@ export default new class BuyerCartService {
         }
       })
 
-      // if product already exist in cart, just update the product quantity
       if (cartFind) {
         const cartUpdated = await this.cartRepository.save({
           ...cartFind,
@@ -101,6 +97,7 @@ export default new class BuyerCartService {
           product: { id: productFind.id },
           product_quantity: cartFind.product_quantity + product_quantity
         })
+
         return res
           .status(201)
           .json({
@@ -111,15 +108,13 @@ export default new class BuyerCartService {
       }
 
       else {
-        // if product not exist in cart, create a new cart
         const cartData = this.cartRepository.create({
-          // buyer: buyerFind,
-          // product: productFind,
           buyer: { id: buyerFind.id },
           product: { id: productFind.id },
           product_quantity: product_quantity
         })
         const cartAdded = await this.cartRepository.save(cartData)
+
         return res
           .status(201)
           .json({
@@ -147,9 +142,7 @@ export default new class BuyerCartService {
       const { id } = req.params
 
       const cartFind = await this.cartRepository.findOne({
-        where: {
-          id: id
-        }
+        where: { id: id }
       })
 
       if (!cartFind) {
@@ -190,9 +183,7 @@ export default new class BuyerCartService {
       const { product_quantity } = req.body
 
       const cartFind = await this.cartRepository.findOne({
-        where: {
-          id: id
-        }
+        where: { id: id }
       })
 
       if (!cartFind) {
