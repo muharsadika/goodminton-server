@@ -6,7 +6,7 @@ import uploadImage from "../../middlewares/UploadImage"
 const AdminProductRoute = Router()
 
 AdminProductRoute.post("/admin/auth/create-product",
-  // jwtAuth,
+  jwtAuth,
   uploadImage.single("product_image_1"),
   AdminProductController.createProduct
 )
