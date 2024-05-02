@@ -51,11 +51,11 @@ export default new class MidtransService {
       const transaction = await snap.createTransaction(parameter)
 
       await this.midtransRepository.save({
-        id_buyer: req.body.id,
         order_id: parameter.transaction_details.order_id,
+        id_buyer: req.body.id,
         transaction_status: "pending",
         gross_amount: parameter.transaction_details.gross_amount,
-        cart_details: req.body.cart_details,
+        // cart_details: req.body.cart_details,
         // product_quantity: parameter.item_details.quantity,
         // email: parameter.customer_details.email,
       })
@@ -91,6 +91,25 @@ export default new class MidtransService {
         })
         transaction.transaction_status = body.transaction_status
         await this.midtransRepository.save(transaction)
+
+        // const orderId = await this.midtransRepository.findOne({
+        //   where: { order_id }
+        // })
+        // console.log("INI ORDER ID", orderId);
+
+        const cart = await this.cartRepository.find({
+          where: { buyer: { id: transaction.id_buyer } },
+          relations: ["product"]
+        })
+        console.log("INI CART", cart);
+
+        // Update product quantities based on each cart
+        for (const cartItem of cart) {
+          const product = cartItem.product;
+          product.product_quantity -= cartItem.product_quantity;
+          await this.productRepository.save(product);
+        }
+
 
         //// USE THIS
         // const transaksiId = req.body.transaction_id
