@@ -119,17 +119,27 @@ export default new class AuthService {
       const usernameFind = await this.authRepository.findOne({
         where: { username: value.username }
       })
-      const passwordFind = await bycrypt.compare(
-        value.password,
-        usernameFind.password
-      )
 
-      if (!usernameFind || !passwordFind) {
+      if (!usernameFind) {
         return res
           .status(400)
           .json({
             code: 400,
-            message: "USERNAME OR PASSWORD NOT WRONG, TRY AGAIN",
+            message: "USERNAME IS NOT REGISTERED, PLEASE SIGN UP !",
+          })
+      }
+
+      const isPasswordValid = await bycrypt.compare(
+        value.password,
+        usernameFind.password
+      );
+
+      if (!isPasswordValid) {
+        return res
+          .status(400)
+          .json({
+            code: 400,
+            message: "PASSWORD INCORRECT !",
           })
       }
 
